@@ -1,6 +1,6 @@
-package com.basejava.wepapp.storage;
+package com.basejava.webapp.storage;
 
-import com.basejava.wepapp.model.Resume;
+import com.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
 

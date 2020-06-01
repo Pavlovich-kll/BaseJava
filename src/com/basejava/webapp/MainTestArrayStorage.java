@@ -1,7 +1,7 @@
-package com.basejava.wepapp;
+package com.basejava.webapp;
 
-import com.basejava.wepapp.model.Resume;
-import com.basejava.wepapp.storage.ArrayStorage;
+import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.storage.ArrayStorage;
 
 /**
  * Test for your com.basejava.wepapp.storage.ArrayStorage implementation
