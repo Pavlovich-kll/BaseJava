@@ -53,7 +53,7 @@ public class ArrayStorage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("ERROR: Резюме " + storage[getInd(uuid)] + " отсутсвует, удаление невозможно");
+            System.out.println("ERROR: Резюме " + uuid + " отсутсвует, удаление невозможно");
         }
     }
     public void clear() {
