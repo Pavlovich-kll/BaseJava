@@ -4,19 +4,15 @@ import com.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
 
-/**
- * Array based storage for Resumes
- */
 public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
     private int size;
 
     public void save(Resume r) {
-        //TODO check if resume not present
-        int i = getInd(r.getUuid());
-        if (i >= 0) {
-            System.out.println("ERROR: Резюме уже существует");
-        } else if(i >= size) {
+        int index = getInd(r.getUuid());
+        if (index >= 0) {
+            System.out.println("ERROR: Резюме " + r.getUuid() + "  уже существует");
+        } else if(index >= size) {
             System.out.println("ERROR: Количество резюме превысило допустимое значение");
         } else {
             storage[size] = r;
@@ -25,47 +21,39 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        //TODO check if resume present
-        int i = getInd(r.getUuid());
-        if (i >= 0) {
-            storage[i] = r;
+        int index = getInd(r.getUuid());
+        if (index >= 0) {
+            storage[index] = r;
         } else {
-            System.out.println("ERROR: Резюме отсутсвует");
+            System.out.println("ERROR: Резюме " + r.getUuid() + " отсутсвует");
         }
     }
 
     public Resume get(String uuid) {
-        //TODO check if resume present
-        int i = getInd(uuid);
-        if (i >= 0) {
-            return storage[i];
-        } else {
-            System.out.println("ERROR: Резюме отсутсвует");
+        int index = getInd(uuid);
+        if (index >= 0) {
+            return storage[index];
         }
         return null;
     }
 
-    /**
-     * Special method of searching resume
-     */
-    public int getInd(String uuid) {
-        for (int ind = 0; ind < size; ind++) {
-            if (storage[ind].getUuid().equals(uuid)) {
-                return ind;
+    private int getInd(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
             }
         }
         return -1;
     }
 
     public void delete(String uuid) {
-        //TODO check if resume exist
-        int i = getInd(uuid);
-        if (i >= 0) {
-            storage[i] = storage[size - 1];
+        int index = getInd(uuid);
+        if (index >= 0) {
+            storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("ERROR: Резюме отсутсвует, удаление невозможно");
+            System.out.println("ERROR: Резюме " + storage[getInd(uuid)] + " отсутсвует, удаление невозможно");
         }
     }
     public void clear() {
