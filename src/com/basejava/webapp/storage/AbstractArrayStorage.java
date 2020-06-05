@@ -11,23 +11,25 @@ public abstract class AbstractArrayStorage implements Storage {
     protected int size;
 
     public void save(Resume r) {
-        int index = getIndex(r.getUuid());
+        String getU = r.getUuid();
+        int index = getIndex(getU);
         if (index >= 0) {
-            System.out.println("ERROR: Резюме " + r.getUuid() + "  уже существует");
-        } else if (STORAGE_LIMIT <= size) {
+            System.out.println("ERROR: Резюме " + getU + "  уже существует");
+        } else if (size >= STORAGE_LIMIT) {
             System.out.println("ERROR: Количество резюме превысило допустимое значение");
         } else {
-            insertValue(index, r);
+            insertNewResume(index, r);
             size++;
         }
     }
 
     public void update(Resume r) {
-        int index = getIndex(r.getUuid());
+        String getU = r.getUuid();
+        int index = getIndex(getU);
         if (index >= 0) {
             storage[index] = r;
         } else {
-            System.out.println("ERROR: Резюме " + r.getUuid() + " отсутсвует");
+            System.out.println("ERROR: Резюме " + getU + " отсутсвует");
         }
     }
 
@@ -42,7 +44,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
-            deleteValue(index);
+            shiftAfterDeletion(index);
             storage[size - 1] = null;
             size--;
         } else {
@@ -65,7 +67,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void deleteValue(int index);
+    protected abstract void shiftAfterDeletion(int index);
 
-    protected abstract void insertValue(int index, Resume r);
+    protected abstract void insertNewResume(int index, Resume r);
 }
