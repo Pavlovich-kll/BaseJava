@@ -7,9 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 public abstract class AbstractArrayStorageTest {
-    private Storage storage;
+    private final Storage storage;
     private static final String UUID_1 = "uuid1";
-    private static Resume resume_1 = new Resume(UUID_1);
+    private static final Resume resume_1 = new Resume(UUID_1);
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
@@ -54,7 +54,7 @@ public abstract class AbstractArrayStorageTest {
             throw new NotExistStorageException(UUID_1);
         }
         storage.update(resume_1);
-        Assert.assertSame(resume_1, storage.get(UUID_1));;
+        Assert.assertEquals(resume_1, storage.get(UUID_1));
     }
 
     @Test
@@ -84,12 +84,11 @@ public abstract class AbstractArrayStorageTest {
     public void getAll() throws Exception {
         Resume resume_2 = new Resume(UUID_2);
         Resume resume_3 = new Resume(UUID_3);
-        storage.getAll();
+        Resume[] resume = storage.getAll();
         Assert.assertEquals(3, storage.size());
-        Assert.assertEquals(resume_1, storage.get(UUID_1));
-        Assert.assertEquals(resume_2, storage.get(UUID_2));
-        Assert.assertEquals(resume_3, storage.get(UUID_3));
-
+        Assert.assertEquals(resume_1, resume[0]);
+        Assert.assertEquals(resume_2, resume[1]);
+        Assert.assertEquals(resume_3, resume[2]);
     }
 
     @Test
