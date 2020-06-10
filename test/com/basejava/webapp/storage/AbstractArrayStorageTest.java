@@ -42,7 +42,7 @@ public abstract class AbstractArrayStorageTest {
             for (int i = 4; i <= 10000; i++) {
                 storage.save(new Resume());
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Assert.fail();
         }
         storage.save(new Resume());
@@ -98,7 +98,7 @@ public abstract class AbstractArrayStorageTest {
         assertSize(3);
     }
 
-    public void assertSize(int size)  {
+    public void assertSize(int size) {
         Assert.assertEquals(size, storage.size());
     }
 }
