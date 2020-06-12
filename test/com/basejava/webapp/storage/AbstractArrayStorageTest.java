@@ -12,9 +12,19 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private static final Resume resume_1 = new Resume(UUID_1);
-    private static final Resume resume_2 = new Resume(UUID_2);
-    private static final Resume resume_3 = new Resume(UUID_3);
+    private static final Resume resume_1;
+    private static final Resume resume_2;
+    private static final Resume resume_3;
+
+    /**
+     * если есть какой- то checkit excaption у поля, то ловить этот чекит уже лучше
+     * в статическом блоке при инициализации;
+     */
+    static {
+        resume_1 = new Resume(UUID_1);
+        resume_2 = new Resume(UUID_2);
+        resume_3 = new Resume(UUID_3);
+    }
 
     protected AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
