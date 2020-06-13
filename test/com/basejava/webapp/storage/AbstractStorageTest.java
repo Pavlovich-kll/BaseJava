@@ -6,27 +6,17 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public abstract class AbstractArrayStorageTest {
+public abstract class AbstractStorageTest {
     private final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private static final Resume resume_1;
-    private static final Resume resume_2;
-    private static final Resume resume_3;
+    private static final Resume resume_1 = new Resume(UUID_1);
+    private static final Resume resume_2 = new Resume(UUID_2);
+    private static final Resume resume_3 = new Resume(UUID_3);
 
-    /**
-     * если есть какой- то checkit excaption у поля, то ловить этот чекит уже лучше
-     * в статическом блоке при инициализации;
-     */
-    static {
-        resume_1 = new Resume(UUID_1);
-        resume_2 = new Resume(UUID_2);
-        resume_3 = new Resume(UUID_3);
-    }
-
-    protected AbstractArrayStorageTest(Storage storage) {
+    protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -47,13 +37,13 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = Exception.class)
-    public void saveOverFlow() throws Exception {
+    public void saveOverflow() throws Exception {
         try {
-            for (int i = 4; i <= 10000; i++) {
+            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
         } catch (Exception e) {
-            Assert.fail();
+            Assert.fail("Exception not thrown");
         }
         storage.save(new Resume());
     }
@@ -85,6 +75,11 @@ public abstract class AbstractArrayStorageTest {
         storage.delete(UUID_1);
         assertSize(2);
         storage.get(UUID_1);
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void deleteNotExist() throws Exception {
+        storage.delete("Dummy");
     }
 
     @Test
