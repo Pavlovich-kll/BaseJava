@@ -2,14 +2,17 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.model.Resume;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class MapStorage extends AbstractStorage {
-    private final HashMap<String, Resume> myHashMap = new HashMap<String, Resume>();
+    private final HashMap<String, Resume> mapStorage = new HashMap<>();
 
     @Override
     protected void doSave(Resume r, Object searchKey) {
-        myHashMap.put(r.getUuid(), r);
+        mapStorage.put(r.getUuid(), r);
     }
 
     @Override
@@ -19,7 +22,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume r, Object resume) {
-        myHashMap.put(r.getUuid(), r);
+        mapStorage.put(r.getUuid(), r);
     }
 
     @Override
@@ -29,28 +32,30 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-        return myHashMap.get(uuid);
+        return mapStorage.get(uuid);
     }
 
     @Override
     protected void doDelete(Object resume) {
-        myHashMap.remove(((Resume) resume).getUuid());
+        mapStorage.remove(((Resume) resume).getUuid());
     }
 
     @Override
     public void clear() {
-        myHashMap.clear();
+        mapStorage.clear();
     }
 
     @Override
     public Resume[] getAll() {
-        Resume[] resume = new Resume[myHashMap.size()];
-        myHashMap.values().toArray(resume);
-        return resume;
+        Resume[] resume = new Resume[mapStorage.size()];
+        mapStorage.values().toArray(resume);
+        ArrayList<Resume> list = new ArrayList<>(Arrays.asList(resume));
+        Collections.sort(list);
+        return list.toArray(resume);
     }
 
     @Override
     public int size() {
-        return myHashMap.size();
+        return mapStorage.size();
     }
 }

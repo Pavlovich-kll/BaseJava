@@ -36,17 +36,6 @@ public abstract class AbstractStorageTest {
         Assert.assertEquals(resume_4, storage.get(UUID_4));
     }
 
-    @Test(expected = Exception.class)
-    public void saveOverflow() throws Exception {
-        try {
-            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
-            }
-        } catch (Exception e) {
-            Assert.fail("Exception not thrown");
-        }
-        storage.save(new Resume());
-    }
 
     @Test
     public void update() throws Exception {
