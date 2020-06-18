@@ -48,7 +48,7 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> list = getCopyAll();
-            Collections.sort(list);
+        Collections.sort(list);
         return list;
     }
 
@@ -65,5 +65,4 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Object getSearchKey(String uuid);
 
     protected abstract void doDelete(Object searchKey);
-
 }
