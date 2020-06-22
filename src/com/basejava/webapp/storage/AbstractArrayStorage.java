@@ -13,18 +13,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected int size;
 
     @Override
-    protected void doSave(Resume r, Integer index) {
+    protected void doSave(Resume resume, Integer index) {
         if (size >= STORAGE_LIMIT) {
-            throw new StorageException("ERROR: Количество резюме превысило допустимое значение", r.getUuid());
+            throw new StorageException("ERROR: Количество резюме превысило допустимое значение", resume.getUuid());
         } else {
-            insertNewResume(index, r);
+            insertResume(index, resume);
             size++;
         }
     }
 
     @Override
-    protected void doUpdate(Resume r, Integer index) {
-        storage[index] = r;
+    protected void doUpdate(Resume resume, Integer index) {
+        storage[index] = resume;
     }
 
     @Override
@@ -51,7 +51,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     protected List<Resume> getCopyAll() {
-        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
+        return Arrays.asList(Arrays.copyOf(storage, size));
     }
 
     public int size() {
@@ -62,5 +62,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     protected abstract void shiftAfterDeletion(int index);
 
-    protected abstract void insertNewResume(int index, Resume r);
+    protected abstract void insertResume(int index, Resume resume);
 }

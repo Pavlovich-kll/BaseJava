@@ -10,8 +10,8 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     private final HashMap<String, Resume> mapStorage = new HashMap<>();
 
     @Override
-    protected void doSave(Resume r, Resume searchKey) {
-        mapStorage.put(r.getUuid(), r);
+    protected void doSave(Resume resume, Resume searchKey) {
+        mapStorage.put(resume.getUuid(), resume);
     }
 
     @Override
@@ -20,8 +20,8 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected void doUpdate(Resume r, Resume resume) {
-        mapStorage.put(r.getUuid(), r);
+    protected void doUpdate(Resume resume1, Resume resume) {
+        mapStorage.put(resume1.getUuid(), resume1);
     }
 
     @Override

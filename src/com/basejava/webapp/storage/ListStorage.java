@@ -9,8 +9,8 @@ public class ListStorage extends AbstractStorage<Integer> {
     private final List<Resume> list = new ArrayList<>();
 
     @Override
-    protected void doSave(Resume r, Integer searchKey) {
-        list.add(r);
+    protected void doSave(Resume resume, Integer searchKey) {
+        list.add(resume);
     }
 
     @Override
@@ -19,8 +19,8 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void doUpdate(Resume r, Integer searchKey) {
-        list.set(searchKey, r);
+    protected void doUpdate(Resume resume, Integer searchKey) {
+        list.set(searchKey, resume);
     }
 
     @Override

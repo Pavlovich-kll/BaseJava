@@ -1,4 +1,4 @@
-package com.basejava.webapp.storage;
+package com.basejava.webapp;
 
 public class MainUtil {
     public static void main(String[] args) {

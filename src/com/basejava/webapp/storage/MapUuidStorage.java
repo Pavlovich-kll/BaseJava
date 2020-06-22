@@ -5,9 +5,10 @@ import com.basejava.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapUuidStorage extends AbstractStorage<String> {
-    private final HashMap<String, Resume> mapStorage = new HashMap<>();
+    private final Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
     protected List<Resume> getCopyAll() {
@@ -15,8 +16,8 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected void doSave(Resume r, String uuid) {
-        mapStorage.put(uuid, r);
+    protected void doSave(Resume resume, String uuid) {
+        mapStorage.put(uuid, resume);
     }
 
     @Override
@@ -25,8 +26,8 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected void doUpdate(Resume r, String uuid) {
-        mapStorage.put(uuid, r);
+    protected void doUpdate(Resume resume, String uuid) {
+        mapStorage.put(uuid, resume);
     }
 
     @Override

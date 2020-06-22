@@ -4,8 +4,8 @@ import com.basejava.webapp.model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
 
-    protected void insertNewResume(int index, Resume r) {
-        storage[size] = r;
+    protected void insertResume(int index, Resume resume) {
+        storage[size] = resume;
     }
 
     protected void shiftAfterDeletion(int index) {
