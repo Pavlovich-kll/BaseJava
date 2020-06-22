@@ -7,10 +7,12 @@ import java.util.UUID;
 
 public class Resume implements Comparable<Resume> {
 
+    private static Link url;
     private final String uuid;
     private final String fullName;
     private final Map<SectionType, AbstractSection> mapSection = new EnumMap<>(SectionType.class);
     private final Map<ContactType, String> mapContact = new EnumMap<>(ContactType.class);
+    private final Map<ContactType, Link> mapContactLink = new EnumMap<>(ContactType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -35,6 +37,10 @@ public class Resume implements Comparable<Resume> {
 
     public void setContact(ContactType contactType, String value) {
         mapContact.put(contactType, value);
+    }
+
+    public void setContact(ContactType contactType, Link url) {
+        mapContactLink.put(contactType, url);
     }
 
     public void setSection(SectionType sectionType, AbstractSection section) {
