@@ -5,9 +5,10 @@ import com.basejava.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapResumeStorage extends AbstractStorage<Resume> {
-    private final HashMap<String, Resume> mapStorage = new HashMap<>();
+    private final Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
     protected void doSave(Resume resume, Resume searchKey) {
