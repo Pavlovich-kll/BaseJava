@@ -14,7 +14,7 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException("Error", e);
         }
-        File dir = new File(".\\src\\com\\basejava\\webapp");
+        File dir = new File(".\\src\\com\\basejava");
         System.out.println(dir.isDirectory());
         String[] list = dir.list();
         if (list != null) {
@@ -31,6 +31,27 @@ public class MainFile {
             System.out.println(fis.read());
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+
+        doRecursiveTraversal(dir);
+    }
+
+    /**
+     * Рекурсивный обход (возможен только вертикальный (в глубину))
+     * позволяет выполнить просмотр всех вершин дерева и получить общие характеристики всего дерева.
+     * @param dir
+     */
+    public static void doRecursiveTraversal(File dir) {
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    System.out.println("This is directory: " + file.getName());
+                    doRecursiveTraversal(file);
+                } else if (file.isFile()) {
+                    System.out.println("This is file: " + file.getName());
+                }
+            }
         }
     }
 }

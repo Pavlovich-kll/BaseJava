@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ResumeTestData {
-    private static String uuid1;
-    private static Resume resume_1;
+    public static String uuid1;
+    public static Resume resume_1;
 
-    public static void main(String[] args) {
+    public static void setInfoTest() {
         resume_1 = new Resume("uuid1", "Grigory Kislin");
         uuid1 = resume_1.getUuid();
 
@@ -31,13 +31,18 @@ public class ResumeTestData {
                 "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2;",
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce.")));
         resume_1.setSection(SectionType.EXPERIENCE, new ExperienceSection(
-                new Company("Wrike", "https://www.wrike.com/", "something", YearMonth.of(2014, 10), YearMonth.of(2016, 1)),
-                new Company("Luxoft", "https://career.luxoft.com/locations/russia/", "something", YearMonth.of(2010, 12), YearMonth.of(2012, 4))));
+                new Company("Wrike", "https://www.wrike.com/", new Company.Position("ololo", YearMonth.of(2014, 10), YearMonth.of(2016, 1))),
+                new Company("Luxoft", "https://career.luxoft.com/locations/russia/", new Company.Position("ololo", YearMonth.of(2010, 12), YearMonth.of(2012, 4)))));
 
         resume_1.setSection(SectionType.EDUCATION, new ExperienceSection(
-                new Company("Coursera", "https://www.coursera.org/learn/progfun1", "\"Functional Programming Principles in Scala\" by Martin Odersky", YearMonth.of(2013, 3), YearMonth.of(2013, 5)),
-                new Company("Luxoft", "https://www.luxoft-training.ru", "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"", YearMonth.of(2011, 3), YearMonth.of(2011, 4))));
+                new Company("Coursera", "https://www.coursera.org/learn/progfun1", new Company.Position("\"Functional Programming Principles in Scala\" by Martin Odersky", YearMonth.of(2013, 3), YearMonth.of(2013, 5))),
+                new Company("Luxoft", "https://www.luxoft-training.ru", new Company.Position("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"", YearMonth.of(2011, 3), YearMonth.of(2011, 4))),
+                new Company("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "https://itmo.ru/ru/",
+                        new Company.Position("Аспирантура (программист С, С++)", YearMonth.of(1993, 9), YearMonth.of(1996, 7)),
+                        new Company.Position("Инженер (программист Fortran, C)", YearMonth.of(1987, 9), YearMonth.of(1993, 7)))));
+    }
 
+    public static void main(String[] args) {
         System.out.println(resume_1.getUuid());
         System.out.println(resume_1.getFullName());
         System.out.println();

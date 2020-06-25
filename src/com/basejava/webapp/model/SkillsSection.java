@@ -1,12 +1,18 @@
 package com.basejava.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class SkillsSection extends AbstractSection {
     private final List<String> skills;
 
+    public SkillsSection(String...skills) {
+        this(Arrays.asList(skills));
+    }
+
     public SkillsSection(List<String> skills) {
+        Objects.requireNonNull(skills, "skills must not be null");
         this.skills = skills;
     }
 

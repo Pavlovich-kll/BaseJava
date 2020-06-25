@@ -6,6 +6,7 @@ public class SelfInfoSection extends AbstractSection {
     private final String selfInfo;
 
     public SelfInfoSection(String selfInfo) {
+        Objects.requireNonNull(selfInfo, "selfInfo must not be null");
         this.selfInfo = selfInfo;
     }
 

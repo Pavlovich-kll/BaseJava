@@ -25,8 +25,9 @@ public abstract class AbstractStorageTest {
 
     @Before
     public void setUp() throws Exception {
+        ResumeTestData.setInfoTest();
         storage.clear();
-        storage.save(resume_1);
+        storage.save(ResumeTestData.resume_1);
         storage.save(resume_2);
         storage.save(resume_3);
     }
@@ -54,7 +55,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() throws Exception {
-        Assert.assertEquals(resume_1, storage.get(UUID_1));
+        Assert.assertEquals(ResumeTestData.resume_1, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -83,7 +84,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAllSorted() throws Exception {
         List<Resume> actualResume = storage.getAllSorted();
-        List<Resume> expectedResumes = Arrays.asList(resume_1, resume_2, resume_3);
+        List<Resume> expectedResumes = Arrays.asList(ResumeTestData.resume_1, resume_2, resume_3);
         assertSize(3);
         Assert.assertEquals(expectedResumes, actualResume);
     }

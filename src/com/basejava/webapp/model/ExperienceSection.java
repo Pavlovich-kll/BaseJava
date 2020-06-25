@@ -12,6 +12,7 @@ public class ExperienceSection extends AbstractSection {
     }
 
     public ExperienceSection(List<Company> companies) {
+        Objects.requireNonNull(companies, "companies must not be null");
         this.companies = companies;
     }
 

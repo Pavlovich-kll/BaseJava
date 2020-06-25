@@ -2,8 +2,10 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
+import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Resume;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -22,7 +24,11 @@ public abstract class AbstractStorage<SK> implements Storage {
     public void update(Resume resume) {
         LOG.info("Update " + resume);
         SK searchKey = getExistedKey(resume.getUuid());
-        doUpdate(resume, searchKey);
+        try {
+            doUpdate(resume, searchKey);
+        } catch (IOException e) {
+            throw new StorageException("Can not update ", resume.getUuid(), e);
+        }
     }
 
     @Override
@@ -71,7 +77,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract Resume doGet(SK searchKey);
 
-    protected abstract void doUpdate(Resume resume, SK searchKey);
+    protected abstract void doUpdate(Resume resume, SK searchKey) throws IOException;
 
     protected abstract boolean isExist(SK searchKey);
 
