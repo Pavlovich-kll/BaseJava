@@ -15,9 +15,9 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private static final Resume resume_1 = ResumeTestData.getResume1("uuid1", "Grigoriy Kislin");
-    private static final Resume resume_2 = ResumeTestData.getResume2("uuid2", "fullName2");
-    private static final Resume resume_3 = ResumeTestData.getResume3("uuid3", "fullName3");
+    private static final Resume resume_1 = ResumeTestData.getResume("uuid1", "Grigoriy Kislin");
+    private static final Resume resume_2 = ResumeTestData.getResume("uuid2", "fullName2");
+    private static final Resume resume_3 = ResumeTestData.getResume("uuid3", "fullName3");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
