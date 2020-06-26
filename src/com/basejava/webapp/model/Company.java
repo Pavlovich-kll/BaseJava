@@ -1,12 +1,15 @@
 package com.basejava.webapp.model;
 
+import java.io.Serializable;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Company {
+public class Company implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final Link link;
     private List<Position> positions = new ArrayList<>();
 
@@ -17,7 +20,7 @@ public class Company {
         this.positions = Arrays.asList(positions);
     }
 
-    public static class Position {
+    public static class Position implements Serializable {
         public final String filling;
         public final YearMonth startDate;
         public final YearMonth endDate;
