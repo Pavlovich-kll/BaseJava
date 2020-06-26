@@ -7,12 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ResumeTestData {
-    public static String uuid1;
-    public static Resume resume_1;
 
-    public static Resume getResume() {
-        resume_1 = new Resume("uuid1", "Grigory Kislin");
-        uuid1 = resume_1.getUuid();
+    public static Resume getResume1(String uuid1, String fullName1) {
+        Resume resume_1 = new Resume(uuid1, fullName1);
 
         resume_1.setContact(ContactType.PHONE_NUMBER, "+7(921) 855-0482");
         resume_1.setContact(ContactType.SKYPE, "Grigory.Kislin");
@@ -43,7 +40,54 @@ public class ResumeTestData {
         return resume_1;
     }
 
+    public static Resume getResume2(String uuid2, String fullName2) {
+        Resume resume_2 = new Resume(uuid2, fullName2);
+
+        resume_2.setContact(ContactType.PHONE_NUMBER, "+7(921) 222 2222");
+        resume_2.setContact(ContactType.SKYPE, "Micha");
+        resume_2.setContact(ContactType.EMAIL, "@yandex.ru");
+        resume_2.setContact(ContactType.LINKEDIN, new Link("Профиль Linkedin", "https://www.linkedin.com/in/gkislin"));
+        resume_2.setContact(ContactType.GITHUB, new Link("Профиль GitHub", "https://github.com/gkislin"));
+        resume_2.setContact(ContactType.STACKOVERFLOW, new Link("Профиль Stackoverflow", "https://stackoverflow.com/users/548473/grigory-kislin"));
+        resume_2.setContact(ContactType.HOME_PAGE, new Link("Домашняя страница", "http://gkislin.ru/"));
+
+        resume_2.setSection(SectionType.OBJECTIVE, new SelfInfoSection("Java"));
+        resume_2.setSection(SectionType.PERSONAL, new SelfInfoSection("Аналитический склад ума"));
+        resume_2.setSection(SectionType.ACHIEVEMENT, new SkillsSection(List.of("Разработка Web приложения")));
+        resume_2.setSection(SectionType.QUALIFICATIONS, new SkillsSection(List.of("Java")));
+        resume_2.setSection(SectionType.EXPERIENCE, new ExperienceSection(
+                new Company("Company2", "https://www.Company2.com/", new Company.Position("ololo2", YearMonth.of(2014, 10), YearMonth.of(2016, 1)))));
+        resume_2.setSection(SectionType.EDUCATION, new ExperienceSection(
+                new Company("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "https://itmo.ru/ru/",
+                        new Company.Position("Аспирантура (программист С, С++)", YearMonth.of(1993, 9), YearMonth.of(1996, 7)))));
+        return resume_2;
+    }
+
+    public static Resume getResume3(String uuid3, String fullName3) {
+        Resume resume_3 = new Resume(uuid3, fullName3);
+
+        resume_3.setContact(ContactType.PHONE_NUMBER, "+7(921) 333 3333");
+        resume_3.setContact(ContactType.SKYPE, "Dasha");
+        resume_3.setContact(ContactType.EMAIL, "@yandex.ru");
+        resume_3.setContact(ContactType.LINKEDIN, new Link("Профиль Linkedin", "https://www.linkedin.com/in/gkislin"));
+        resume_3.setContact(ContactType.GITHUB, new Link("Профиль GitHub", "https://github.com/gkislin"));
+        resume_3.setContact(ContactType.STACKOVERFLOW, new Link("Профиль Stackoverflow", "https://stackoverflow.com/users/548473/grigory-kislin"));
+        resume_3.setContact(ContactType.HOME_PAGE, new Link("Домашняя страница", "http://gkislin.ru/"));
+
+        resume_3.setSection(SectionType.OBJECTIVE, new SelfInfoSection("Java3"));
+        resume_3.setSection(SectionType.PERSONAL, new SelfInfoSection("Аналитический склад ума3"));
+        resume_3.setSection(SectionType.ACHIEVEMENT, new SkillsSection(List.of("Разработка Web приложения3")));
+        resume_3.setSection(SectionType.QUALIFICATIONS, new SkillsSection(List.of("Java3")));
+        resume_3.setSection(SectionType.EXPERIENCE, new ExperienceSection(
+                new Company("Company2", "https://www.Company3.com/", new Company.Position("ololo3", YearMonth.of(2014, 10), YearMonth.of(2016, 1)))));
+        resume_3.setSection(SectionType.EDUCATION, new ExperienceSection(
+                new Company("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "https://itmo.ru/ru/",
+                        new Company.Position("Аспирантура (программист С, С++)", YearMonth.of(1993, 9), YearMonth.of(1996, 7)))));
+        return resume_3;
+    }
+
     public static void main(String[] args) {
+        Resume resume_1 = getResume1("uuid1", "Grigoriy Kislin");
         System.out.println(resume_1.getUuid());
         System.out.println(resume_1.getFullName());
         System.out.println();
