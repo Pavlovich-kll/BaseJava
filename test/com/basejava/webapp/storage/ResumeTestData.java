@@ -10,7 +10,7 @@ public class ResumeTestData {
     public static String uuid1;
     public static Resume resume_1;
 
-    public static void setInfoTest() {
+    public static Resume getResume() {
         resume_1 = new Resume("uuid1", "Grigory Kislin");
         uuid1 = resume_1.getUuid();
 
@@ -40,6 +40,7 @@ public class ResumeTestData {
                 new Company("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "https://itmo.ru/ru/",
                         new Company.Position("Аспирантура (программист С, С++)", YearMonth.of(1993, 9), YearMonth.of(1996, 7)),
                         new Company.Position("Инженер (программист Fortran, C)", YearMonth.of(1987, 9), YearMonth.of(1993, 7)))));
+        return resume_1;
     }
 
     public static void main(String[] args) {
