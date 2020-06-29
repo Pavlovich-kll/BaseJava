@@ -33,7 +33,7 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
-        doRecursiveTraversal(dir);
+        doRecursiveTraversal(dir, "  ");
     }
 
     /**
@@ -41,15 +41,15 @@ public class MainFile {
      * позволяет выполнить просмотр всех вершин дерева и получить общие характеристики всего дерева.
      * @param dir
      */
-    public static void doRecursiveTraversal(File dir) {
+    public static void doRecursiveTraversal(File dir, String indent) {
         File[] files = dir.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    System.out.println("This is directory: " + file.getName());
-                    doRecursiveTraversal(file);
+                    System.out.println(indent + "This is directory: " + file.getName());
+                    doRecursiveTraversal(file, indent + "  ");
                 } else if (file.isFile()) {
-                    System.out.println("This is file: " + file.getName());
+                    System.out.println(indent + "  " +  "This is file: " + file.getName());
                 }
             }
         }

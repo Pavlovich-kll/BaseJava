@@ -7,19 +7,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("D:\\basejava\\storage");
+    protected static final File STORAGE_DIR = new File("C:\\Users\\Kirill\\Documents\\GitHub\\basejava\\basejava\\storage");
     protected final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private static final Resume resume_1 = ResumeTestData.getResume("uuid1", "Grigoriy Kislin");
-    private static final Resume resume_2 = ResumeTestData.getResume("uuid2", "fullName2");
-    private static final Resume resume_3 = ResumeTestData.getResume("uuid3", "fullName3");
+    private static final Resume resume_1 = ResumeTestData.getResume(UUID_1, "Grigoriy Kislin");
+    private static final Resume resume_2 = ResumeTestData.getResume(UUID_2, "fullName2");
+    private static final Resume resume_3 = ResumeTestData.getResume(UUID_3, "fullName3");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -87,7 +88,7 @@ public abstract class AbstractStorageTest {
         List<Resume> actualResume = storage.getAllSorted();
         List<Resume> expectedResumes = Arrays.asList(resume_1, resume_2, resume_3);
         assertSize(3);
-        Assert.assertEquals(expectedResumes, actualResume);
+        Assert.assertEquals(new ArrayList<>(expectedResumes), actualResume);
     }
 
     @Test

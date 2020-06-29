@@ -34,6 +34,20 @@ public class Company implements Serializable {
             this.endDate = endDate;
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Position position = (Position) o;
+            return filling.equals(position.filling) &&
+                    startDate.equals(position.startDate) &&
+                    endDate.equals(position.endDate);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(filling, startDate, endDate);
+        }
     }
 
     @Override
