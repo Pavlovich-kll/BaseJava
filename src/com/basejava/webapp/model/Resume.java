@@ -56,6 +56,12 @@ public class Resume implements Comparable<Resume>, Serializable {
     }
 
     @Override
+    public int compareTo(Resume o) {
+        int compare = fullName.compareTo(o.fullName);
+        return compare == 0 ? uuid.compareTo(o.uuid) : compare;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -74,11 +80,5 @@ public class Resume implements Comparable<Resume>, Serializable {
     @Override
     public String toString() {
         return uuid;
-    }
-
-    @Override
-    public int compareTo(Resume o) {
-        int compare = fullName.compareTo(o.fullName);
-        return compare == 0 ? uuid.compareTo(o.uuid) : compare;
     }
 }

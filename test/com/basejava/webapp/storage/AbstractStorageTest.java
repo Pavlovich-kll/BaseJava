@@ -18,9 +18,9 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private static final Resume resume_1 = ResumeTestData.getResume(UUID_1, "Grigoriy Kislin");
-    private static final Resume resume_2 = ResumeTestData.getResume(UUID_2, "fullName2");
-    private static final Resume resume_3 = ResumeTestData.getResume(UUID_3, "fullName3");
+    private static final Resume RESUME_1 = ResumeTestData.getResume(UUID_1, "Grigoriy Kislin");
+    private static final Resume RESUME_2 = ResumeTestData.getResume(UUID_2, "fullName2");
+    private static final Resume RESUME_3 = ResumeTestData.getResume(UUID_3, "fullName3");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -29,9 +29,20 @@ public abstract class AbstractStorageTest {
     @Before
     public void setUp() throws Exception {
         storage.clear();
-        storage.save(resume_1);
-        storage.save(resume_2);
-        storage.save(resume_3);
+        storage.save(RESUME_1);
+        storage.save(RESUME_2);
+        storage.save(RESUME_3);
+    }
+
+    @Test
+    public void clear() throws Exception {
+        storage.clear();
+        assertSize(0);
+    }
+
+    @Test
+    public void size() throws Exception {
+        assertSize(3);
     }
 
     @Test
@@ -57,7 +68,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() throws Exception {
-        Assert.assertEquals(resume_1, storage.get(UUID_1));
+        Assert.assertEquals(RESUME_1, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -78,22 +89,11 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void clear() throws Exception {
-        storage.clear();
-        assertSize(0);
-    }
-
-    @Test
     public void getAllSorted() throws Exception {
         List<Resume> actualResume = storage.getAllSorted();
-        List<Resume> expectedResumes = Arrays.asList(resume_1, resume_2, resume_3);
+        List<Resume> expectedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
         assertSize(3);
         Assert.assertEquals(new ArrayList<>(expectedResumes), actualResume);
-    }
-
-    @Test
-    public void size() throws Exception {
-        assertSize(3);
     }
 
     public void assertSize(int size) {

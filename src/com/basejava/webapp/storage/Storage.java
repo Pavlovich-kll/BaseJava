@@ -6,6 +6,10 @@ import java.util.List;
 
 public interface Storage {
 
+    int size();
+
+    void clear();
+
     void save(Resume resume);
 
     void update(Resume resume);
@@ -14,10 +18,6 @@ public interface Storage {
 
     void delete(String uuid);
 
-    void clear();
-
     List<Resume> getAllSorted();
-
-    int size();
 }
 

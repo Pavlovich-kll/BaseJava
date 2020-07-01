@@ -2,6 +2,7 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.storage.stream.SerializeStrategy;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -13,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
@@ -27,17 +29,23 @@ public class PathStorage extends AbstractStorage<Path> {
         this.strategy = strategy;
     }
 
+    @Override
+    public void clear() {
+        getDirectoryFiles().forEach(this::doDelete);
+    }
+
+    @Override
+    public int size() {
+        return (int) getDirectoryFiles().count();
+    }
+
     /**
      * directory - каталог, где мы будем сохранять наше резюме
      */
 
     @Override
-    protected List<Resume> getCopyAll() {
-        try {
-            return Files.list(directory).map(this::doGet).collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new StorageException("Can not get all path", e);
-        }
+    protected List<Resume> getAll() {
+        return getDirectoryFiles().map(this::doGet).collect(Collectors.toList());
     }
 
     @Override
@@ -87,21 +95,11 @@ public class PathStorage extends AbstractStorage<Path> {
         }
     }
 
-    @Override
-    public void clear() {
+    private Stream<Path> getDirectoryFiles() {
         try {
-            Files.list(directory).forEach(this::doDelete);
+            return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Path delete error", e);
-        }
-    }
-
-    @Override
-    public int size() {
-        try {
-            return (int) Files.list(directory).count();
-        } catch (IOException e) {
-            throw new StorageException("Can not get size", e);
+            throw new StorageException("error of directory", e);
         }
     }
 

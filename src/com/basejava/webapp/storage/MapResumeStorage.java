@@ -11,6 +11,16 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     private final Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
+    public void clear() {
+        mapStorage.clear();
+    }
+
+    @Override
+    public int size() {
+        return mapStorage.size();
+    }
+
+    @Override
     protected void doSave(Resume resume, Resume searchKey) {
         mapStorage.put(resume.getUuid(), resume);
     }
@@ -41,17 +51,7 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    public void clear() {
-        mapStorage.clear();
-    }
-
-    @Override
-    protected List<Resume> getCopyAll() {
+    protected List<Resume> getAll() {
         return new ArrayList<>(mapStorage.values());
-    }
-
-    @Override
-    public int size() {
-        return mapStorage.size();
     }
 }

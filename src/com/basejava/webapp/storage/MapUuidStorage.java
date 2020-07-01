@@ -11,7 +11,17 @@ public class MapUuidStorage extends AbstractStorage<String> {
     private final Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
-    protected List<Resume> getCopyAll() {
+    public void clear() {
+        mapStorage.clear();
+    }
+
+    @Override
+    public int size() {
+        return mapStorage.size();
+    }
+
+    @Override
+    protected List<Resume> getAll() {
         return new ArrayList<>(mapStorage.values());
     }
 
@@ -43,15 +53,5 @@ public class MapUuidStorage extends AbstractStorage<String> {
     @Override
     protected void doDelete(String uuid) {
         mapStorage.remove(uuid);
-    }
-
-    @Override
-    public void clear() {
-        mapStorage.clear();
-    }
-
-    @Override
-    public int size() {
-        return mapStorage.size();
     }
 }

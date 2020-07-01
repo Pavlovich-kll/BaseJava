@@ -2,6 +2,7 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.storage.stream.SerializeStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -25,16 +26,17 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FileStorage that = (FileStorage) o;
-        return directory.equals(that.directory);
+    public void clear() {
+        File[] files = getFiles();
+        for (File file : files) {
+            doDelete(file);
+        }
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(directory);
+    public int size() {
+        File[] files = getFiles();
+        return files.length;
     }
 
     /**
@@ -42,16 +44,13 @@ public class FileStorage extends AbstractStorage<File> {
      */
 
     @Override
-    protected List<Resume> getCopyAll() {
-        List<Resume> resumes = new ArrayList<>();
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
-            try {
-                resumes.add(strategy.doRead(new FileInputStream(file)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    protected List<Resume> getAll() {
+        File[] files = getFiles();
+        List<Resume> list = new ArrayList<>(size());
+        for (File file : files) {
+            list.add(doGet(file));
         }
-        return resumes;
+        return list;
     }
 
     @Override
@@ -99,16 +98,11 @@ public class FileStorage extends AbstractStorage<File> {
         }
     }
 
-    @Override
-    public void clear() {
+    private File[] getFiles() {
         File[] files = directory.listFiles();
-        for (File file : Objects.requireNonNull(files)) {
-            doDelete(file);
+        if (files == null) {
+            throw new StorageException("directory is null");
         }
-    }
-
-    @Override
-    public int size() {
-        return Objects.requireNonNull(directory.listFiles()).length;
+        return files;
     }
 }

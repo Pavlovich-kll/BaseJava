@@ -9,6 +9,17 @@ public class ListStorage extends AbstractStorage<Integer> {
     private final List<Resume> list = new ArrayList<>();
 
     @Override
+    public void clear() {
+        list.clear();
+
+    }
+
+    @Override
+    public int size() {
+        return list.size();
+    }
+
+    @Override
     protected void doSave(Resume resume, Integer searchKey) {
         list.add(resume);
     }
@@ -44,18 +55,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public void clear() {
-        list.clear();
-
-    }
-
-    @Override
-    protected List<Resume> getCopyAll() {
+    protected List<Resume> getAll() {
         return new ArrayList<>(list);
-    }
-
-    @Override
-    public int size() {
-        return list.size();
     }
 }

@@ -10,7 +10,6 @@ public class TestSingleton {
     }
 
     private TestSingleton() {
-
     }
 
     public static void main(String[] args) {

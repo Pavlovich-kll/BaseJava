@@ -6,22 +6,22 @@ import java.util.*;
 
 public class MainCollections {
     private static final String UUID_1 = "uuid1";
-    private static final Resume resume_1 = new Resume(UUID_1, "fullName1");
+    private static final Resume RESUME_1 = new Resume(UUID_1, "fullName1");
 
     private static final String UUID_2 = "uuid2";
-    private static final Resume resume_2 = new Resume(UUID_2,"fullName2");
+    private static final Resume RESUME_2 = new Resume(UUID_2,"fullName2");
 
     private static final String UUID_3 = "uuid3";
-    private static final Resume resume_3 = new Resume(UUID_3,"fullName3");
+    private static final Resume RESUME_3 = new Resume(UUID_3,"fullName3");
 
     private static final String UUID_4 = "uuid4";
-    private static final Resume resume_4 = new Resume(UUID_4,"fullName4");
+    private static final Resume RESUME_4 = new Resume(UUID_4,"fullName4");
 
     public static void main(String[] args) {
         Collection<Resume> collection = new ArrayList<>();
-        collection.add(resume_1);
-        collection.add(resume_2);
-        collection.add(resume_3);
+        collection.add(RESUME_1);
+        collection.add(RESUME_2);
+        collection.add(RESUME_3);
 
         Iterator<Resume> iterator = collection.iterator();
         /**
@@ -49,14 +49,14 @@ public class MainCollections {
          * getValue() - берет значение из пары, не нужно постоянно обращаться к Map (это ошибка);
          */
         Map<String, Resume> map = new HashMap<>();
-        map.put(UUID_1, resume_1);
-        map.put(UUID_2, resume_2);
-        map.put(UUID_3, resume_3);
+        map.put(UUID_1, RESUME_1);
+        map.put(UUID_2, RESUME_2);
+        map.put(UUID_3, RESUME_3);
 
         for (Map.Entry<String, Resume> entry : map.entrySet()) {
             System.out.println(entry.getValue());
         }
-        List<Resume> resumes = Arrays.asList(resume_1, resume_2, resume_3);
+        List<Resume> resumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
         resumes.remove(1);
         System.out.println(resumes);
     }

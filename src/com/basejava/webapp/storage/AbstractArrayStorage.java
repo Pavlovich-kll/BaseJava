@@ -12,6 +12,21 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
 
+    protected abstract Integer getSearchKey(String uuid);
+
+    protected abstract void shiftAfterDeletion(int index);
+
+    protected abstract void insertResume(int index, Resume resume);
+
+    public void clear() {
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
+    }
+
+    public int size() {
+        return size;
+    }
+
     @Override
     protected void doSave(Resume resume, Integer index) {
         if (size >= STORAGE_LIMIT) {
@@ -44,23 +59,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         return index >= 0;
     }
 
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
-
     @Override
-    protected List<Resume> getCopyAll() {
+    protected List<Resume> getAll() {
         return Arrays.asList(Arrays.copyOf(storage, size));
     }
-
-    public int size() {
-        return size;
-    }
-
-    protected abstract Integer getSearchKey(String uuid);
-
-    protected abstract void shiftAfterDeletion(int index);
-
-    protected abstract void insertResume(int index, Resume resume);
 }
