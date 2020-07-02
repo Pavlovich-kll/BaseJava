@@ -9,7 +9,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -68,7 +67,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return strategy.doRead(new BufferedInputStream(Files.newInputStream(Path.of(String.valueOf(file)))));
+            return strategy.doRead(new BufferedInputStream(Files.newInputStream(file.toPath())));
         } catch (IOException e) {
             throw new StorageException("File read error", file.getName(), e);
         }
@@ -77,7 +76,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume resume, File file) {
         try {
-            strategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(Path.of(String.valueOf(file)))));
+            strategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(file.toPath())));
         } catch (IOException e) {
             throw new StorageException("Can not update ", file.getName(), e);
         }
@@ -103,7 +102,7 @@ public class FileStorage extends AbstractStorage<File> {
     private File[] getFiles() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StorageException("Error reading: list the files in a directory is null");
+            throw new StorageException("Error reading: list the files in " + directory + " is null");
         }
         return files;
     }
