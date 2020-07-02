@@ -4,7 +4,12 @@ import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.storage.stream.SerializeStrategy;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,16 +32,14 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] files = getFiles();
-        for (File file : files) {
+        for (File file : getFiles()) {
             doDelete(file);
         }
     }
 
     @Override
     public int size() {
-        File[] files = getFiles();
-        return files.length;
+        return getFiles().length;
     }
 
     /**
@@ -45,9 +48,8 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getAll() {
-        File[] files = getFiles();
         List<Resume> list = new ArrayList<>(size());
-        for (File file : files) {
+        for (File file : getFiles()) {
             list.add(doGet(file));
         }
         return list;
@@ -66,7 +68,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return strategy.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return strategy.doRead(new BufferedInputStream(Files.newInputStream(Path.of(String.valueOf(file)))));
         } catch (IOException e) {
             throw new StorageException("File read error", file.getName(), e);
         }
@@ -75,7 +77,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume resume, File file) {
         try {
-            strategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            strategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(Path.of(String.valueOf(file)))));
         } catch (IOException e) {
             throw new StorageException("Can not update ", file.getName(), e);
         }
@@ -101,7 +103,7 @@ public class FileStorage extends AbstractStorage<File> {
     private File[] getFiles() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StorageException("directory is null");
+            throw new StorageException("Error reading: list the files in a directory is null");
         }
         return files;
     }
