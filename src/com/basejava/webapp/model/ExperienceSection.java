@@ -4,10 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class ExperienceSection extends AbstractSection {
+public class ExperienceSection extends Section {
     private static final long serialVersionUID = 1L;
 
-    private final List<Company> companies;
+    private List<Company> companies;
+
+    public ExperienceSection() {
+    }
 
     public ExperienceSection(Company... companies) {
         this(Arrays.asList(companies));

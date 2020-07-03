@@ -3,7 +3,7 @@ package com.basejava.webapp.storage;
 import com.basejava.webapp.model.*;
 
 import java.time.YearMonth;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 
 public class ResumeTestData {
@@ -21,10 +21,12 @@ public class ResumeTestData {
 
         resume.setSection(SectionType.OBJECTIVE, new SelfInfoSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
         resume.setSection(SectionType.PERSONAL, new SelfInfoSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
-        resume.setSection(SectionType.ACHIEVEMENT, new SkillsSection(List.of("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
+        resume.setSection(SectionType.ACHIEVEMENT, new SkillsSection(
+                Arrays.asList("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
                 "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.",
                 "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.")));
-        resume.setSection(SectionType.QUALIFICATIONS, new SkillsSection(List.of("Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy;",
+        resume.setSection(SectionType.QUALIFICATIONS, new SkillsSection(
+                Arrays.asList("Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy;",
                 "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2;",
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce.")));
         resume.setSection(SectionType.EXPERIENCE, new ExperienceSection(
@@ -49,7 +51,7 @@ public class ResumeTestData {
             System.out.println(entry.getKey().getTitle() + ": " + entry.getValue());
         }
         System.out.println();
-        for (Map.Entry<SectionType, AbstractSection> entry : resume_1.getSections().entrySet()) {
+        for (Map.Entry<SectionType, Section> entry : resume_1.getSections().entrySet()) {
             System.out.println(entry.getKey().getTitle() + ": ");
             System.out.println(entry.getValue());
         }

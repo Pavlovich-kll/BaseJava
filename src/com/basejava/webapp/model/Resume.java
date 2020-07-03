@@ -1,18 +1,26 @@
 package com.basejava.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final String uuid;
-    private final String fullName;
-    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+    private String uuid;
+    private String fullName;
+    private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
     private final Map<ContactType, Object> contacts = new EnumMap<>(ContactType.class);
+
+    public Resume() {
+    }
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -31,7 +39,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         return fullName;
     }
 
-    public Map<SectionType, AbstractSection> getSections() {
+    public Map<SectionType, Section> getSections() {
         return sections;
     }
 
@@ -39,7 +47,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts;
     }
 
-    public AbstractSection getSection(SectionType sectionType) {
+    public Section getSection(SectionType sectionType) {
         return sections.get(sectionType);
     }
 
@@ -51,7 +59,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         contacts.put(contactType, value);
     }
 
-    public void setSection(SectionType sectionType, AbstractSection section) {
+    public void setSection(SectionType sectionType, Section section) {
         sections.put(sectionType, section);
     }
 
@@ -79,6 +87,9 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     @Override
     public String toString() {
-        return uuid;
+        return "Resume{" +
+                "uuid='" + uuid + '\'' +
+                ", fullName='" + fullName + '\'' +
+                '}';
     }
 }

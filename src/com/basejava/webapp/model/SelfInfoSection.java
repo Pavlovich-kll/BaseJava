@@ -2,10 +2,13 @@ package com.basejava.webapp.model;
 
 import java.util.Objects;
 
-public class SelfInfoSection extends AbstractSection {
+public class SelfInfoSection extends Section {
     private static final long serialVersionUID = 1L;
 
-    private final String selfInfo;
+    private String selfInfo;
+
+    public SelfInfoSection() {
+    }
 
     public SelfInfoSection(String selfInfo) {
         Objects.requireNonNull(selfInfo, "selfInfo must not be null");

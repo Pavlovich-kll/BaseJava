@@ -4,10 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class SkillsSection extends AbstractSection {
+public class SkillsSection extends Section {
     private static final long serialVersionUID = 1L;
 
-    private final List<String> skills;
+    private List<String> skills;
+
+    public SkillsSection() {
+    }
 
     public SkillsSection(String...skills) {
         this(Arrays.asList(skills));

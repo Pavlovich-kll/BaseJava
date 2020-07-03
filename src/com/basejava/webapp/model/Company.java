@@ -1,22 +1,39 @@
 package com.basejava.webapp.model;
 
+import com.basejava.webapp.util.YearMonthAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Company implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final Link link;
-    private final List<Position> positions;
+    private Link link;
+    private List<Position> positions;
 
+    public Company() {
+    }
+
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
 
-        public final String filling;
-        public final YearMonth startDate;
-        public final YearMonth endDate;
+
+        public String filling;
+        @XmlJavaTypeAdapter(YearMonthAdapter.class)
+        public YearMonth startDate;
+        @XmlJavaTypeAdapter(YearMonthAdapter.class)
+        public YearMonth endDate;
+
+        public Position() {
+        }
+
         public Position(String filling, YearMonth startDate, YearMonth endDate) {
             Objects.requireNonNull(filling, "filling shouldn't be null");
             Objects.requireNonNull(startDate, "startDate shouldn't be null");
