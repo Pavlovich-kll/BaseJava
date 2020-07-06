@@ -14,10 +14,10 @@ public class ResumeTestData {
         resume.setContact(ContactType.PHONE_NUMBER, "+7(921) 855-0482");
         resume.setContact(ContactType.SKYPE, "Grigory.Kislin");
         resume.setContact(ContactType.EMAIL, "gkislin@yandex.ru");
-        resume.setContact(ContactType.LINKEDIN, new Link("Профиль Linkedin", "https://www.linkedin.com/in/gkislin"));
-        resume.setContact(ContactType.GITHUB, new Link("Профиль GitHub", "https://github.com/gkislin"));
-        resume.setContact(ContactType.STACKOVERFLOW, new Link("Профиль Stackoverflow", "https://stackoverflow.com/users/548473/grigory-kislin"));
-        resume.setContact(ContactType.HOME_PAGE, new Link("Домашняя страница", "http://gkislin.ru/"));
+        resume.setContact(ContactType.LINKEDIN, "Профиль Linkedin");
+        resume.setContact(ContactType.GITHUB,"Профиль GitHub");
+        resume.setContact(ContactType.STACKOVERFLOW,"Профиль Stackoverflow");
+        resume.setContact(ContactType.HOME_PAGE, "Домашняя страница");
 
         resume.setSection(SectionType.OBJECTIVE, new SelfInfoSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
         resume.setSection(SectionType.PERSONAL, new SelfInfoSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
@@ -47,7 +47,7 @@ public class ResumeTestData {
         System.out.println(resume_1.getUuid());
         System.out.println(resume_1.getFullName());
         System.out.println();
-        for (Map.Entry<ContactType, Object> entry : resume_1.getContacts().entrySet()) {
+        for (Map.Entry<ContactType, String> entry : resume_1.getContacts().entrySet()) {
             System.out.println(entry.getKey().getTitle() + ": " + entry.getValue());
         }
         System.out.println();
