@@ -15,6 +15,10 @@ public class SelfInfoSection extends Section {
         this.selfInfo = selfInfo;
     }
 
+    public String getSelfInfo() {
+        return selfInfo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

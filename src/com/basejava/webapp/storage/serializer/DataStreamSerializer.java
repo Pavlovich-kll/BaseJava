@@ -11,6 +11,45 @@ import java.util.Map;
 import static com.basejava.webapp.model.SectionType.*;
 
 public class DataStreamSerializer implements SerializeStrategy {
+    @Override
+    public void doWrite(Resume resume, OutputStream os) throws IOException {
+        try (DataOutputStream dos = new DataOutputStream(os)) {
+            dos.writeUTF(resume.getUuid());
+            dos.writeUTF(resume.getFullName());
+            Map<ContactType, String> contacts = resume.getContacts();
+
+            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+                dos.writeUTF(entry.getKey().name());
+                dos.writeUTF(entry.getValue());
+            }
+
+            for (Map.Entry<SectionType, Section> entry : resume.getSections().entrySet()) {
+                SectionType sectionType = entry.getKey();
+                Section section = entry.getValue();
+                dos.writeUTF(sectionType.toString());
+                switch (sectionType) {
+                    case OBJECTIVE:
+                        writeSelfInfo(section, dos, OBJECTIVE);
+                        break;
+                    case PERSONAL:
+                        writeSelfInfo(section, dos, PERSONAL);
+                        break;
+                    case ACHIEVEMENT:
+                        writeSkills(section, dos, ACHIEVEMENT);
+                        break;
+                    case QUALIFICATIONS:
+                        writeSkills(section, dos, QUALIFICATIONS);
+                        break;
+                    case EXPERIENCE:
+                        writeCompanies(section, dos, EXPERIENCE);
+                        break;
+                    case EDUCATION:
+                        writeCompanies(section, dos, EDUCATION);
+                        break;
+                }
+            }
+        }
+    }
 
     @Override
     public Resume doRead(InputStream is) throws IOException {
@@ -23,35 +62,31 @@ public class DataStreamSerializer implements SerializeStrategy {
                 resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
 
-            readSelfInfo(dis, resume, OBJECTIVE);
-            readSelfInfo(dis, resume, PERSONAL);
-            readSkills(dis, resume, ACHIEVEMENT);
-            readSkills(dis, resume, QUALIFICATIONS);
-            readCompanies(dis, resume, EXPERIENCE);
-            readCompanies(dis, resume, EDUCATION);
+            int sectionsSize = dis.readInt();
+            for (int index = 0; index < sectionsSize; index++) {
+                SectionType sectionType = SectionType.valueOf(dis.readUTF());
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    readSelfInfo(dis, resume, OBJECTIVE);
+                    break;
+                    case PERSONAL:
+                    readSelfInfo(dis, resume, PERSONAL);
+                    break;
+                    case ACHIEVEMENT:
+                    readSkills(dis, resume, ACHIEVEMENT);
+                    break;
+                    case QUALIFICATIONS:
+                    readSkills(dis, resume, QUALIFICATIONS);
+                    break;
+                    case EXPERIENCE:
+                    readCompanies(dis, resume, EXPERIENCE);
+                    break;
+                    case EDUCATION:
+                    readCompanies(dis, resume, EDUCATION);
+                    break;
+                }
+            }
             return resume;
-        }
-    }
-
-    @Override
-    public void doWrite(Resume resume, OutputStream os) throws IOException {
-        try (DataOutputStream dos = new DataOutputStream(os)) {
-            dos.writeUTF(resume.getUuid());
-            dos.writeUTF(resume.getFullName());
-            Map<ContactType, String> contacts = resume.getContacts();
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.toString());
-            }
-            for (Map.Entry<SectionType, Section> entry : resume.getSections().entrySet()) {
-                Section section = entry.getValue();
-                writeSelfInfo(entry, section, dos, resume, OBJECTIVE);
-                writeSelfInfo(entry, section, dos, resume, PERSONAL);
-                writeSkills(entry, section, dos, ACHIEVEMENT);
-                writeSkills(entry, section, dos, QUALIFICATIONS);
-                writeCompanies(entry, section, dos, resume, EXPERIENCE);
-                writeCompanies(entry, section, dos, resume, EDUCATION);
-            }
         }
     }
 
@@ -91,14 +126,11 @@ public class DataStreamSerializer implements SerializeStrategy {
         }
     }
 
-    public void writeSelfInfo(Map.Entry<SectionType, Section> entry,Section section ,DataOutputStream dos, Resume resume, Enum OBJECTIVE) throws IOException {
-        dos.writeInt(resume.getSections().size());
-        SectionType sectionType = entry.getKey();
-        dos.writeUTF(sectionType.toString());
-        dos.writeUTF(section.toString());
+    public void writeSelfInfo(Section section, DataOutputStream dos, Enum OBJECTIVE) throws IOException {
+        dos.writeUTF(((SelfInfoSection) section).getSelfInfo());
     }
 
-    public void writeSkills(Map.Entry<SectionType, Section> entry, Section section, DataOutputStream dos, Enum ACHIEVEMENT) throws IOException {
+    public void writeSkills(Section section, DataOutputStream dos, Enum ACHIEVEMENT) throws IOException {
         List<String> skills = ((SkillsSection) section).getSkills();
         dos.writeInt(skills.size());
         for (String skill : skills) {
@@ -106,7 +138,7 @@ public class DataStreamSerializer implements SerializeStrategy {
         }
     }
 
-    public void writeCompanies(Map.Entry<SectionType, Section> entry, Section section, DataOutputStream dos, Resume resume, Enum EXPERIENCE) throws IOException {
+    public void writeCompanies(Section section, DataOutputStream dos, Enum EXPERIENCE) throws IOException {
         List<Company> companies = ((ExperienceSection) section).getCompanies();
         dos.writeInt(companies.size());
         for (Company company : companies) {
