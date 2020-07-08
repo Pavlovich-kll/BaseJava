@@ -16,33 +16,27 @@ public class DataStreamSerializer implements SerializeStrategy {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
-            Map<ContactType, String> contacts = resume.getContacts();
-
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            dos.writeInt(resume.getContacts().size());
+            for (Map.Entry<ContactType, String> entry : resume.getContacts().entrySet()) {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             }
 
+            dos.writeInt(resume.getSections().size());
             for (Map.Entry<SectionType, Section> entry : resume.getSections().entrySet()) {
                 SectionType sectionType = entry.getKey();
-                Section section = entry.getValue();
                 dos.writeUTF(sectionType.toString());
+                Section section = entry.getValue();
                 switch (sectionType) {
                     case OBJECTIVE:
-                        writeSelfInfo(section, dos, OBJECTIVE);
-                        break;
                     case PERSONAL:
                         writeSelfInfo(section, dos, PERSONAL);
                         break;
                     case ACHIEVEMENT:
-                        writeSkills(section, dos, ACHIEVEMENT);
-                        break;
                     case QUALIFICATIONS:
                         writeSkills(section, dos, QUALIFICATIONS);
                         break;
                     case EXPERIENCE:
-                        writeCompanies(section, dos, EXPERIENCE);
-                        break;
                     case EDUCATION:
                         writeCompanies(section, dos, EDUCATION);
                         break;
@@ -67,61 +61,48 @@ public class DataStreamSerializer implements SerializeStrategy {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case OBJECTIVE:
-                    readSelfInfo(dis, resume, OBJECTIVE);
-                    break;
                     case PERSONAL:
-                    readSelfInfo(dis, resume, PERSONAL);
-                    break;
+                        resume.setSection(sectionType, new SelfInfoSection(dis.readUTF()));
+                        break;
                     case ACHIEVEMENT:
-                    readSkills(dis, resume, ACHIEVEMENT);
-                    break;
                     case QUALIFICATIONS:
-                    readSkills(dis, resume, QUALIFICATIONS);
-                    break;
+                        readSkills(dis, sectionType, resume, QUALIFICATIONS);
+                        break;
                     case EXPERIENCE:
-                    readCompanies(dis, resume, EXPERIENCE);
-                    break;
                     case EDUCATION:
-                    readCompanies(dis, resume, EDUCATION);
-                    break;
+                        readCompanies(dis, sectionType, resume, EDUCATION);
+                        break;
                 }
             }
             return resume;
         }
     }
 
-    public void readSelfInfo(DataInputStream dis, Resume resume, Enum PERSONAL) throws IOException {
-        int sectionSize = dis.readInt();
-        for (int i = 0; i < sectionSize; i++) {
-            SectionType sectionType = SectionType.valueOf(dis.readUTF());
-            resume.setSection(sectionType, new SelfInfoSection(dis.readUTF()));
-        }
-    }
-
-    public void readSkills(DataInputStream dis, Resume resume, Enum ACHIEVEMENT) throws IOException {
+    public void readSkills(DataInputStream dis, SectionType sectionType, Resume resume, Enum ACHIEVEMENT) throws IOException {
         int skillsSize = dis.readInt();
+        List<String> skills = new ArrayList<>();
         for (int i = 0; i < skillsSize; i++) {
-            SectionType sectionType = SectionType.valueOf(dis.readUTF());
-            resume.setSection(sectionType, new SkillsSection(dis.readUTF()));
+            skills.add(dis.readUTF());
         }
+        resume.setSection(sectionType, new SkillsSection(skills));
     }
 
-    public void readCompanies(DataInputStream dis, Resume resume, Enum EXPERIENCE) throws IOException {
-        int companiesSize = dis.readInt();
+    public void readCompanies(DataInputStream dis, SectionType sectionType, Resume resume, Enum EXPERIENCE) throws IOException {
         List<Company> companies = new ArrayList<>();
+        int companiesSize = dis.readInt();
         for (int i1 = 0; i1 < companiesSize; i1++) {
             String name = dis.readUTF();
             String url = dis.readUTF();
-            int positionsCompanySize = dis.readInt();
-            Company.Position positions = new Company.Position();
-            for (int i2 = 0; i2 < positionsCompanySize; i2++) {
-                String filling = dis.readUTF();
+            Link link = new Link(name, url);
+            List<Company.Position> positions = new ArrayList<>();
+            int positionsSize = dis.readInt();
+            for (int i2 = 0; i2 < positionsSize; i2++) {
                 YearMonth startDate = YearMonth.parse(dis.readUTF());
                 YearMonth endDate = YearMonth.parse(dis.readUTF());
-                positions = new Company.Position(filling, startDate, endDate);
+                String filling = dis.readUTF();
+                positions.add(new Company.Position(filling, startDate, endDate));
             }
-            companies.add(new Company(name, url, positions));
-            SectionType sectionType = SectionType.valueOf(dis.readUTF());
+            companies.add(new Company(link, positions));
             resume.setSection(sectionType, new ExperienceSection(companies));
         }
     }
@@ -140,10 +121,15 @@ public class DataStreamSerializer implements SerializeStrategy {
 
     public void writeCompanies(Section section, DataOutputStream dos, Enum EXPERIENCE) throws IOException {
         List<Company> companies = ((ExperienceSection) section).getCompanies();
-        dos.writeInt(companies.size());
+        int companySize = companies.size();
+        dos.writeInt(companySize);
         for (Company company : companies) {
+            Link link = company.getLink();
+            dos.writeUTF(link.getName());
+            dos.writeUTF(link.getUrl());
             List<Company.Position> positions = company.getPositions();
-            dos.writeInt(positions.size());
+            int positionSize = positions.size();
+            dos.writeInt(positionSize);
             for (Company.Position position : positions) {
                 dos.writeUTF(String.valueOf(position.getStartDate()));
                 dos.writeUTF(String.valueOf(position.getEndDate()));

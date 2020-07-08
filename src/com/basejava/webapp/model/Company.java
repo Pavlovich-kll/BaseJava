@@ -22,10 +22,13 @@ public class Company implements Serializable {
     }
 
     public Company(String name, String url, Position... positions) {
-        Objects.requireNonNull(name, "name shouldn't be null");
-        Objects.requireNonNull(url, "url shouldn't be null");
-        this.link = new Link(name, url);
-        this.positions = Arrays.asList(positions);
+        this(new Link(name, url), Arrays.asList(positions));
+    }
+
+    public Company(Link link, List<Position> positions) {
+        Objects.requireNonNull(positions, "positions must not be null");
+        this.link = link;
+        this.positions = positions;
     }
 
     public Link getLink() {
@@ -60,8 +63,8 @@ public class Company implements Serializable {
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
-
         public String filling;
+
         @XmlJavaTypeAdapter(YearMonthAdapter.class)
         public YearMonth startDate;
 
