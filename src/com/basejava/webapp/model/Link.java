@@ -34,7 +34,7 @@ public class Link implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Link link = (Link) o;
         return name.equals(link.name) &&
-                url.equals(link.url);
+                url != null ? url.equals(link.url) : link.url == null;
     }
 
     @Override

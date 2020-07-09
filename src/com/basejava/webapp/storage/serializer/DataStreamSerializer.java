@@ -100,7 +100,8 @@ public class DataStreamSerializer implements SerializeStrategy {
                 YearMonth startDate = YearMonth.parse(dis.readUTF());
                 YearMonth endDate = YearMonth.parse(dis.readUTF());
                 String filling = dis.readUTF();
-                positions.add(new Company.Position(filling, startDate, endDate));
+                String title = dis.readUTF();
+                positions.add(new Company.Position(title, filling, startDate, endDate));
             }
             companies.add(new Company(link, positions));
             resume.setSection(sectionType, new ExperienceSection(companies));
@@ -133,7 +134,8 @@ public class DataStreamSerializer implements SerializeStrategy {
             for (Company.Position position : positions) {
                 dos.writeUTF(String.valueOf(position.getStartDate()));
                 dos.writeUTF(String.valueOf(position.getEndDate()));
-                dos.writeUTF(position.getFilling());
+                dos.writeUTF(position.getDescription());
+                dos.writeUTF(position.getTitle());
             }
         }
     }

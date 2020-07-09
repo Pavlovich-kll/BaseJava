@@ -63,7 +63,8 @@ public class Company implements Serializable {
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
-        public String filling;
+        public String title;
+        public String description;
 
         @XmlJavaTypeAdapter(YearMonthAdapter.class)
         public YearMonth startDate;
@@ -74,17 +75,22 @@ public class Company implements Serializable {
         public Position() {
         }
 
-        public Position(String filling, YearMonth startDate, YearMonth endDate) {
-            Objects.requireNonNull(filling, "filling shouldn't be null");
+        public Position(String title, String description, YearMonth startDate, YearMonth endDate) {
+            Objects.requireNonNull(title, "title shouldn't be null");
             Objects.requireNonNull(startDate, "startDate shouldn't be null");
             Objects.requireNonNull(endDate, "endtDate shouldn't be null");
-            this.filling = filling;
+            this.title = title;
+            this.description = description;
             this.startDate = startDate;
             this.endDate = endDate;
         }
 
-        public String getFilling() {
-            return filling;
+        public String getDescription() {
+            return description;
+        }
+
+        public String getTitle() {
+            return title;
         }
 
         public YearMonth getStartDate() {
@@ -100,19 +106,22 @@ public class Company implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Position position = (Position) o;
-            return filling.equals(position.filling) &&
+            return title.equals(position.title) &&
+                    description != null ? description.equals(position.description) : position.description == null &&
                     startDate.equals(position.startDate) &&
                     endDate.equals(position.endDate);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(filling, startDate, endDate);
+            return Objects.hash(description, title, startDate, endDate);
         }
+
         @Override
         public String toString() {
             return "Position{" +
-                    "filling='" + filling + '\'' +
+                    "description='" + description + '\'' +
+                    ", title='" + title + '\'' +
                     ", startDate=" + startDate +
                     ", endDate=" + endDate +
                     '}';
