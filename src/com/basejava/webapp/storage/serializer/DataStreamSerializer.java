@@ -11,6 +11,8 @@ import java.util.Map;
 import static com.basejava.webapp.model.SectionType.*;
 
 public class DataStreamSerializer implements SerializeStrategy {
+    private final static String dummy = "";
+
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
@@ -92,16 +94,18 @@ public class DataStreamSerializer implements SerializeStrategy {
         int companiesSize = dis.readInt();
         for (int i1 = 0; i1 < companiesSize; i1++) {
             String name = dis.readUTF();
-            String url = dis.readUTF();
+            String notDummyUrl = dis.readUTF();
+            String url = notDummyUrl.equals(dummy) ? null : notDummyUrl;
             Link link = new Link(name, url);
             List<Company.Position> positions = new ArrayList<>();
             int positionsSize = dis.readInt();
             for (int i2 = 0; i2 < positionsSize; i2++) {
                 YearMonth startDate = YearMonth.parse(dis.readUTF());
                 YearMonth endDate = YearMonth.parse(dis.readUTF());
-                String filling = dis.readUTF();
+                String notDummyDescription = dis.readUTF();
+                String description = notDummyDescription.equals(dummy) ? null : notDummyDescription;
                 String title = dis.readUTF();
-                positions.add(new Company.Position(title, filling, startDate, endDate));
+                positions.add(new Company.Position(title, description, startDate, endDate));
             }
             companies.add(new Company(link, positions));
             resume.setSection(sectionType, new ExperienceSection(companies));
@@ -127,14 +131,14 @@ public class DataStreamSerializer implements SerializeStrategy {
         for (Company company : companies) {
             Link link = company.getLink();
             dos.writeUTF(link.getName());
-            dos.writeUTF(link.getUrl());
+            dos.writeUTF(link.getUrl() == null ? dummy : link.getUrl());
             List<Company.Position> positions = company.getPositions();
             int positionSize = positions.size();
             dos.writeInt(positionSize);
             for (Company.Position position : positions) {
                 dos.writeUTF(String.valueOf(position.getStartDate()));
                 dos.writeUTF(String.valueOf(position.getEndDate()));
-                dos.writeUTF(position.getDescription());
+                dos.writeUTF(position.getDescription() == null ? dummy : position.getDescription());
                 dos.writeUTF(position.getTitle());
             }
         }
