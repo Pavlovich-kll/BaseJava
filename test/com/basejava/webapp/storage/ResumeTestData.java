@@ -30,7 +30,7 @@ public class ResumeTestData {
                         "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2;",
                         "Version control: Subversion, Git, Mercury, ClearCase, Perforce.")));
         resume.setSection(SectionType.EXPERIENCE, new ExperienceSection(
-                new Company("Wrike", "https://www.wrike.com/", new Company.Position("Company1", "Описание ", YearMonth.of(2014, 10), YearMonth.of(2016, 1))),
+                new Company("Wrike", "https://www.wrike.com/", new Company.Position("Company1", "Описание1 ", YearMonth.of(2014, 10), YearMonth.of(2016, 1))),
                 new Company("Luxoft", "https://career.luxoft.com/locations/russia/", new Company.Position("Company2", "ololo", YearMonth.of(2010, 12), YearMonth.of(2012, 4)))));
 
         resume.setSection(SectionType.EDUCATION, new ExperienceSection(

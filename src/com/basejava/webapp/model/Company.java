@@ -78,19 +78,19 @@ public class Company implements Serializable {
         public Position(String title, String description, YearMonth startDate, YearMonth endDate) {
             Objects.requireNonNull(title, "title shouldn't be null");
             Objects.requireNonNull(startDate, "startDate shouldn't be null");
-            Objects.requireNonNull(endDate, "endtDate shouldn't be null");
+            Objects.requireNonNull(endDate, "endDate shouldn't be null");
             this.title = title;
             this.description = description;
             this.startDate = startDate;
             this.endDate = endDate;
         }
 
-        public String getDescription() {
-            return description;
-        }
-
         public String getTitle() {
             return title;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         public YearMonth getStartDate() {
@@ -114,14 +114,14 @@ public class Company implements Serializable {
 
         @Override
         public int hashCode() {
-            return Objects.hash(description, title, startDate, endDate);
+            return Objects.hash(title, description, startDate, endDate);
         }
 
         @Override
         public String toString() {
             return "Position{" +
-                    "description='" + description + '\'' +
-                    ", title='" + title + '\'' +
+                    "title='" + title + '\'' +
+                    ", description='" + description + '\'' +
                     ", startDate=" + startDate +
                     ", endDate=" + endDate +
                     '}';
