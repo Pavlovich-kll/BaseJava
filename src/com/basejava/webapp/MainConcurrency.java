@@ -28,7 +28,6 @@ public class MainConcurrency {
         }).start();
 
         System.out.println(thread0.getState());
-        deadlock();
 
 /**
  * Задача со счётчиком (counter). Разделить к нему доступ.
@@ -55,41 +54,4 @@ public class MainConcurrency {
         }
 //    }
     }
-
-    public static void deadlock() {
-        Object x = new Object();
-        Object y = new Object();
-
-        new Thread(()-> {
-            synchronized (x) {
-                System.out.println(Thread.currentThread().getName() + ": got x monitor");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(Thread.currentThread().getName() + ": trying to get y monitor");
-                synchronized (y) {
-                    System.out.println(Thread.currentThread().getName() + ": got y monitor");
-                }
-            }
-        }).start();
-
-        new Thread(()-> {
-            synchronized (y) {
-                System.out.println(Thread.currentThread().getName() + ": got y monitor");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(Thread.currentThread().getName() + ": trying to get x monitor");
-                synchronized (x) {
-                    System.out.println(Thread.currentThread().getName() + ": got y monitor");
-                }
-            }
-        }).start();
-    }
-
-
 }
