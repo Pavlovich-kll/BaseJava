@@ -1,57 +1,126 @@
 package com.basejava.webapp;
 
-public class MainConcurrency {
-    private static int counter;
-    private static final Object LOCK = new Object();//этот объект олицетворяет общую очередь, перед которым встают все потоки после выполнения;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+public class MainConcurrency {
+    public static final int THREADS_NUMBER = 10000;
+    private int counter;
+    private final AtomicInteger atomicCounter = new AtomicInteger();
+
+    //    private static final Object LOCK = new Object();
+//    private static final Lock lock = new ReentrantLock();
+    private static final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
+    private static final Lock WRITE_LOCK = reentrantReadWriteLock.writeLock();
+    private static final Lock READ_LOCK = reentrantReadWriteLock.readLock();
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
     public static void main(String[] args) throws InterruptedException {
-        System.out.println(Thread.currentThread().getName());//имя потока, где запускатеся главный thread, т.е. main
-        Thread thread0 = new Thread() { //с помощью него запускаем параллельный процесс
+        System.out.println(Thread.currentThread().getName());
+
+        Thread thread0 = new Thread() {
             @Override
             public void run() {
-                System.out.println(getName() + ", " + getState());//имя потока, который мы создали через new и  его состояние
+                System.out.println(getName() + ", " + getState());
+//                throw new IllegalStateException();
             }
         };
-        thread0.start();//запуск созданного thread
-
-        /**
-         * Первый случай- создаем анонимный класс и переопределяем метод run;
-         * Второй случай- параметризируем метод Thread и в конструктор передает Runnable (Этот случай предпочтительнее);
-         */
+        thread0.start();
 
         new Thread(new Runnable() {
+
             @Override
             public void run() {
                 System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
             }
+
+            private void inc() {
+                synchronized (this) {
+//                    counter++;
+                }
+            }
+
         }).start();
 
         System.out.println(thread0.getState());
 
-/**
- * Задача со счётчиком (counter). Разделить к нему доступ.
- */
         final MainConcurrency mainConcurrency = new MainConcurrency();
-        for (int i = 0; i < 10000; i++) {
-            new Thread(() -> { //создаем поток
-                for (int j = 0; j < 100; j++) {
-                    mainConcurrency.inc();//при нестатическом методе. все  эти 10000 thread встают в очередь к объекту mainConcurrency;
-                }
-            }).start();
-        }
-        Thread.sleep(500);//(1 вар): ждем, пока потоки закончат свое исполнение и потом выводим counter;
-        System.out.println(counter);
-        LazySingleton.getInstance();//instance синглетона;
+        CountDownLatch latch = new CountDownLatch(THREADS_NUMBER);
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+//        CompletionService completionService = new ExecutorCompletionService(executorService);
+//
+//        List<Thread> threads = new ArrayList<>(THREADS_NUMBER);
 
+        for (int i = 0; i < THREADS_NUMBER; i++) {
+
+            Future<Integer> future = executorService.submit(() ->
+//            Thread thread = new Thread(() ->
+            {
+                for (int j = 0; j < 100; j++) {
+                    mainConcurrency.inc();
+                    System.out.println(DATE_FORMAT);
+                }
+                latch.countDown();
+                return 5;
+            });
+//            thread.start();
+//            threads.add(thread);
+        }
+
+/*
+        threads.forEach(t -> {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+*/
+        latch.await(10, TimeUnit.SECONDS);
+        executorService.shutdown();
+//        System.out.println(mainConcurrency.counter);
+        System.out.println(mainConcurrency.atomicCounter.get());
+
+//        final String lock1 = "lock1";
+//        final String lock2 = "lock2";
+//        deadLock(lock1, lock2);
+//        deadLock(lock2, lock1);
     }
 
-    private static void inc() { //метод инкрементирующий счётчик. synchronized- говорит о том, что в метод имеет право заходить только единственный поток;
-//        synchronized (MainConcurrency.class) { //аналогично тому, если мы напишем synchronized в методе перед void, чтобы засинхронить метод целиком;
-        double a = Math.sin(13);
-        synchronized (LOCK) {//все потоки, что будут доходить, становятся "в очередь" перед принятым объектом. Для локальной синхронизации;
-            counter++;
-        }
-//    }
+    private static void deadLock(Object lock1, Object lock2) {
+        new Thread(() -> {
+            System.out.println("Waiting " + lock1);
+            synchronized (lock1) {
+                System.out.println("Holding " + lock1);
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Waiting " + lock2);
+                synchronized (lock2) {
+                    System.out.println("Holding " + lock2);
+                }
+            }
+        }).start();
+    }
+
+    private void inc() {
+//        synchronized (this) {
+//        synchronized (MainConcurrency.class) {
+//        WRITE_LOCK.lock();
+//        try {
+        atomicCounter.incrementAndGet();
+//            counter++;
+//        } finally {
+//            WRITE_LOCK.unlock();
+//        }
+//                wait();
+//                readFile
+//                ...
+//        }
     }
 }
