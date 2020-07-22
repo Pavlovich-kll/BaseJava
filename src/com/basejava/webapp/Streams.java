@@ -2,7 +2,6 @@ package com.basejava.webapp;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Streams {
@@ -28,11 +27,7 @@ public class Streams {
      * https://ru.stackoverflow.com/a/1005668
      */
     public static List<Integer> oddOrEven(List<Integer> integers) {
-        return integers.stream()
-                .reduce(0, Integer::sum) % 2 == 0 ? filter(integers, p -> p % 2 == 0) : filter(integers, p -> p % 2 != 0);
-    }
-
-    private static List<Integer> filter(List<Integer> integers, Predicate<Integer> predicate) {
-        return integers.stream().filter(predicate).collect(Collectors.toList());
+        int reducedNum = integers.stream().reduce(0, Integer::sum);
+        return integers.stream().filter(p -> p % 2 != reducedNum % 2).collect(Collectors.toList());
     }
 }
