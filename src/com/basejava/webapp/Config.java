@@ -8,12 +8,16 @@ import java.util.Properties;
 
 public class Config {
     private static final Config INSTANCE = new Config();
-    protected final File PROPS = new File(".\\storage\\resumes.properties");
-    private Properties properties = new Properties();
-    private File storageDir;
+    protected final File PROPS = new File("config\\\\resumes.properties");
+    private final Properties properties = new Properties();
+    private final File storageDir;
 
     public static Config get() {
         return INSTANCE;
+    }
+
+    public Properties getProperties() {
+        return properties;
     }
 
     private Config() {

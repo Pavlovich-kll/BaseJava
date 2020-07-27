@@ -15,10 +15,10 @@ import java.util.List;
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
     protected final Storage storage;
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    private static final String UUID_1 = "uuid12345678910111213141516171819202";
+    private static final String UUID_2 = "uuid22345678910111213141516171819202";
+    private static final String UUID_3 = "uuid32345678910111213141516171819202";
+    private static final String UUID_4 = "uuid42345678910111213141516171819202";
     private static final Resume RESUME_1 = ResumeTestData.getResume(UUID_1, "Grigoriy Kislin");
     private static final Resume RESUME_2 = ResumeTestData.getResume(UUID_2, "fullName2");
     private static final Resume RESUME_3 = ResumeTestData.getResume(UUID_3, "fullName3");
@@ -53,7 +53,6 @@ public abstract class AbstractStorageTest {
         assertSize(4);
         Assert.assertEquals(resume_4, storage.get(UUID_4));
     }
-
 
     @Test
     public void update() throws Exception {
