@@ -1,6 +1,7 @@
 package com.basejava.webapp.storage;
 
 import com.basejava.webapp.Config;
+import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 import org.junit.Assert;
@@ -11,14 +12,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
     protected final Storage storage;
-    private static final String UUID_1 = "uuid12345678910111213141516171819202";
-    private static final String UUID_2 = "uuid22345678910111213141516171819202";
-    private static final String UUID_3 = "uuid32345678910111213141516171819202";
-    private static final String UUID_4 = "uuid42345678910111213141516171819202";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
     private static final Resume RESUME_1 = ResumeTestData.getResume(UUID_1, "Grigoriy Kislin");
     private static final Resume RESUME_2 = ResumeTestData.getResume(UUID_2, "fullName2");
     private static final Resume RESUME_3 = ResumeTestData.getResume(UUID_3, "fullName3");
@@ -52,6 +54,11 @@ public abstract class AbstractStorageTest {
         storage.save(resume_4);
         assertSize(4);
         Assert.assertEquals(resume_4, storage.get(UUID_4));
+    }
+
+    @Test(expected = ExistStorageException.class)
+    public void saveExist() throws Exception {
+        storage.save(RESUME_1);
     }
 
     @Test
