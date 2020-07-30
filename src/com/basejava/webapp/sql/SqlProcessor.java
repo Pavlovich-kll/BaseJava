@@ -4,6 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @FunctionalInterface
-public interface RequestSQLProcessing<T> {
-    T request(PreparedStatement ps) throws SQLException;
+public interface SqlProcessor<T> {
+    T process(PreparedStatement ps) throws SQLException;
 }

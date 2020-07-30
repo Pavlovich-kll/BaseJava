@@ -1,5 +1,6 @@
 package com.basejava.webapp.sql;
 
+import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.StorageException;
 
 import java.sql.Connection;
@@ -14,16 +15,19 @@ public class SqlHelper {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 
-    public void prepare(String sqlCommand) {
-        prepare(sqlCommand, PreparedStatement::execute);
+    public void execute(String sqlCommand) {
+        execute(sqlCommand, PreparedStatement::execute);
     }
 
-    public <T> T prepare(String sqlCommand, RequestSQLProcessing<T> requestSQLProcessing) {
+    public <T> T execute(String sqlCommand, SqlProcessor<T> sqlProcessor) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlCommand)) {
-            return requestSQLProcessing.request(ps);
+            return sqlProcessor.process(ps);
         } catch (SQLException e) {
-            throw new StorageException(e);
+            if (e.getSQLState().equals("23505")) throw new ExistStorageException("error of unique violation");
+            else {
+                throw new StorageException(e);
+            }
         }
     }
 }
