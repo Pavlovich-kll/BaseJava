@@ -24,10 +24,28 @@ public class SqlHelper {
              PreparedStatement ps = conn.prepareStatement(sqlCommand)) {
             return sqlProcessor.process(ps);
         } catch (SQLException e) {
-            if (e.getSQLState().equals("23505")) throw new ExistStorageException("error of unique violation");
+            if (e.getSQLState().equals("23505"))
+                throw new ExistStorageException("error of unique violation");
             else {
                 throw new StorageException(e);
             }
         }
     }
+
+    public <T> T transactionalExecute(SqlTransaction<T> executor) {
+        try (Connection conn = connectionFactory.getConnection()) {
+            try {
+                conn.setAutoCommit(false);//после каждого execute транзакция коммитится
+                T res = executor.execute(conn);
+                conn.commit();
+                return res;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw ExceptionUtil.convertException(e);
+            }
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
+    }
+
 }
