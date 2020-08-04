@@ -83,7 +83,8 @@ public class SqlStorage implements Storage {
                         if (value != null) {
                             ContactType type = ContactType.valueOf(rs.getString("type"));
                             r.setContact(type, value);
-                        };
+                        }
+                        ;
                     } while (rs.next());
                     return r;
                 });
@@ -132,11 +133,10 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private void deleteContacts(Resume r, Connection conn) {
-        sqlHelper.execute("DELETE FROM contact WHERE resume_uuid=?", ps -> {
+    private void deleteContacts(Resume r, Connection conn) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid=?")) {
             ps.setString(1, r.getUuid());
             ps.execute();
-            return null;
-        });
+        }
     }
 }
