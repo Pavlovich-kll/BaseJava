@@ -12,13 +12,13 @@ public class ResumeTestData {
     public static Resume getResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
 
-//        resume.setContact(ContactType.PHONE_NUMBER, "+7(921) 855-0482");
-//        resume.setContact(ContactType.SKYPE, "Grigory.Kislin");
-//        resume.setContact(ContactType.EMAIL, "gkislin@yandex.ru");
-//        resume.setContact(ContactType.LINKEDIN, "Профиль Linkedin");
-//        resume.setContact(ContactType.GITHUB, "Профиль GitHub");
-//        resume.setContact(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
-//        resume.setContact(ContactType.HOME_PAGE, "Домашняя страница");
+        resume.setContact(ContactType.PHONE, "+7(921) 855-0482");
+        resume.setContact(ContactType.SKYPE, "Grigory.Kislin");
+        resume.setContact(ContactType.EMAIL, "gkislin@yandex.ru");
+        resume.setContact(ContactType.LINKEDIN, "Профиль Linkedin");
+        resume.setContact(ContactType.GITHUB, "Профиль GitHub");
+        resume.setContact(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
+        resume.setContact(ContactType.HOME_PAGE, "Домашняя страница");
 //
 //        resume.setSection(SectionType.OBJECTIVE, new SelfInfoSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 //        resume.setSection(SectionType.PERSONAL, new SelfInfoSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));

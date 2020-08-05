@@ -24,6 +24,7 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_1 = ResumeTestData.getResume(UUID_1, "fullName1");
     private static final Resume RESUME_2 = ResumeTestData.getResume(UUID_2, "fullName2");
     private static final Resume RESUME_3 = ResumeTestData.getResume(UUID_3, "fullName3");
+    private static final Resume RESUME_4 = ResumeTestData.getResume(UUID_4, "fullName4");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -50,10 +51,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() throws Exception {
-        Resume resume_4 = new Resume(UUID_4, "fullName4");
-        storage.save(resume_4);
+        storage.save(RESUME_4);
         assertSize(4);
-        Assert.assertEquals(resume_4, storage.get(UUID_4));
+        Assert.assertEquals(RESUME_4, storage.get(UUID_4));
     }
 
     @Test(expected = ExistStorageException.class)

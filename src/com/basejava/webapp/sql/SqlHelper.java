@@ -1,6 +1,5 @@
 package com.basejava.webapp.sql;
 
-import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.StorageException;
 
 import java.sql.Connection;
@@ -24,11 +23,7 @@ public class SqlHelper {
              PreparedStatement ps = conn.prepareStatement(sqlCommand)) {
             return sqlProcessor.process(ps);
         } catch (SQLException e) {
-            if (e.getSQLState().equals("23505"))
-                throw new ExistStorageException("error of unique violation");
-            else {
-                throw new StorageException(e);
-            }
+            throw ExceptionUtil.convertException(e);
         }
     }
 
@@ -47,5 +42,4 @@ public class SqlHelper {
             throw new StorageException(e);
         }
     }
-
 }
