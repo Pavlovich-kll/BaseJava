@@ -1,10 +1,8 @@
 package com.basejava.webapp.storage;
 
-import com.basejava.webapp.model.ContactType;
-import com.basejava.webapp.model.Resume;
-import com.basejava.webapp.model.Section;
-import com.basejava.webapp.model.SectionType;
+import com.basejava.webapp.model.*;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class ResumeTestData {
@@ -19,17 +17,17 @@ public class ResumeTestData {
         resume.setContact(ContactType.GITHUB, "Профиль GitHub");
         resume.setContact(ContactType.STACKOVERFLOW, "Профиль Stackoverflow");
         resume.setContact(ContactType.HOME_PAGE, "Домашняя страница");
-//
-//        resume.setSection(SectionType.OBJECTIVE, new SelfInfoSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
-//        resume.setSection(SectionType.PERSONAL, new SelfInfoSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
-//        resume.setSection(SectionType.ACHIEVEMENT, new SkillsSection(
-//                Arrays.asList("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
-//                        "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.",
-//                        "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.")));
-//        resume.setSection(SectionType.QUALIFICATIONS, new SkillsSection(
-//                Arrays.asList("Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy;",
-//                        "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2;",
-//                        "Version control: Subversion, Git, Mercury, ClearCase, Perforce.")));
+
+        resume.setSection(SectionType.OBJECTIVE, new SelfInfoSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        resume.setSection(SectionType.PERSONAL, new SelfInfoSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+        resume.setSection(SectionType.ACHIEVEMENT, new SkillsSection(
+                Arrays.asList("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
+                        "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.",
+                        "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.")));
+        resume.setSection(SectionType.QUALIFICATIONS, new SkillsSection(
+                Arrays.asList("Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy;",
+                        "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2;",
+                        "Version control: Subversion, Git, Mercury, ClearCase, Perforce.")));
 //        resume.setSection(SectionType.EXPERIENCE, new ExperienceSection(
 //                new Company("Wrike", "https://www.wrike.com/", new Company.Position("Company1", "Описание1 ", YearMonth.of(2014, 10), YearMonth.of(2016, 1))),
 //                new Company("Luxoft", "https://career.luxoft.com/locations/russia/", new Company.Position("Company2", "ololo", YearMonth.of(2010, 12), YearMonth.of(2012, 4)))));
