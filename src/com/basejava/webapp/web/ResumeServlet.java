@@ -1,6 +1,7 @@
 package com.basejava.webapp.web;
 
 import com.basejava.webapp.Config;
+import com.basejava.webapp.model.ContactType;
 import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.storage.Storage;
 
@@ -10,13 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
 
-//https://ru.stackoverflow.com/questions/1018236/Вывод-таблицы-БД-через-сервлет
+    //https://ru.stackoverflow.com/questions/1018236/Вывод-таблицы-БД-через-сервлет
 //https://docstore.mik.ua/orelly/java-ent/servlet/ch03_03.htm
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -25,43 +24,47 @@ public class ResumeServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-//        String name = request.getParameter("name");
-//        response.getWriter().write(name == null ? "Hello Resumes!" : "Hello " + name + " !");
-        printTable(response);
-
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
+        Resume resume = storage.get(uuid);
+        resume.setFullName(fullName);
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                resume.setContact(type, value);
+            } else {
+                resume.getContacts().remove(type);
+            }
+        }
+        storage.update(resume);
+        response.sendRedirect("resume");
     }
 
-    private void printTable(HttpServletResponse response) throws IOException {
-        PrintWriter writer = response.getWriter();
-        List<Resume> list = storage.getAllSorted();
-        writer.println(
-                "<html>\n" +
-                        "<head>\n" +
-                            "<title>List of resumes</title>\n" +
-                        "</head>\n" +
-                        "<body>\n" +
-                        "<table>\n" +
-                            "<tr>\n" +
-                                "<th>UUID</th>\n" +
-                                "<th>Full Name</th>\n" +
-                            "</tr>");
-
-        for (Resume resume : list) {
-            writer.println("<tr>");
-            writer.println("<td>" + resume.getUuid() + "</td>");
-            writer.println("<td>" + resume.getFullName() + "</td>");
-            writer.println("</tr>");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
         }
-
-        writer.println(
-                        "</table>\n" +
-                        "</body\n" +
-                "</html>\n");
+        Resume resume;
+        switch (action) {
+            case "delete":
+                storage.delete(uuid);
+                response.sendRedirect("resume");//меняем url после удаления, т.е. запрос на указанный location resume;
+                return;
+            case "view":
+            case "edit":
+                resume = storage.get(uuid);
+                break;
+            default:
+                throw new IllegalArgumentException("Action " + action + " is illegal");
+        }
+        request.setAttribute("resume", resume);
+        request.getRequestDispatcher(
+                ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
+        ).forward(request, response);
     }
 }
