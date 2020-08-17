@@ -5,6 +5,8 @@ import java.util.Objects;
 public class SelfInfoSection extends Section {
     private static final long serialVersionUID = 1L;
 
+    public static SelfInfoSection empty = new SelfInfoSection("");
+
     private String selfInfo;
 
     public SelfInfoSection() {
@@ -34,8 +36,6 @@ public class SelfInfoSection extends Section {
 
     @Override
     public String toString() {
-        return "SelfInfoSection{" +
-                "texInfo='" + selfInfo + '\'' +
-                '}';
+        return selfInfo;
     }
 }

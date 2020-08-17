@@ -7,6 +7,8 @@ import java.util.Objects;
 public class SkillsSection extends Section {
     private static final long serialVersionUID = 1L;
 
+    public  static SkillsSection empty = new SkillsSection("");
+
     private List<String> skills;
 
     public SkillsSection() {

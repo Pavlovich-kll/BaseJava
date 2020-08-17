@@ -1,4 +1,6 @@
 <%@ page import="com.basejava.webapp.model.ContactType" %>
+<%@ page import="com.basejava.webapp.model.ExperienceSection" %>
+<%@ page import="com.basejava.webapp.model.SkillsSection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -26,9 +28,66 @@
             </dl>
         </c:forEach>
         <h3>Секции:</h3>
-        <input type="text" name="section" size=30 value="1"><br/>
-        <input type="text" name="section" size=30 value="2"><br/>
-        <input type="text" name="section" size=30 value="3"><br/>
+        <c:forEach var="sectionEntry" items="${resume.sections}">
+            <jsp:useBean id="sectionEntry"
+                         type="java.util.Map.Entry<com.basejava.webapp.model.SectionType, com.basejava.webapp.model.Section>"/>
+            <c:set var="type" value="${sectionEntry.key}"/>
+            <c:set var="section" value="${sectionEntry.value}"/>
+            <jsp:useBean id="section" type="com.basejava.webapp.model.Section"/>
+            <tr>
+                <td><h3><a name="type.name">${type.title}</a></h3></td>
+            </tr>
+            <c:choose>
+                <c:when test="${type=='PERSONAL'}">
+                    <textarea name='${type}' cols=75 rows=5><%=section%></textarea>
+                </c:when>
+                <c:when test="${type=='OBJECTIVE'}">
+                    <textarea name='${type}' cols=75 rows=5><%=section%></textarea>
+                </c:when>
+
+                <c:when test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
+                    <textarea name='${type}' cols=100
+                              rows=10><%=String.join("\n", ((SkillsSection) section).getSkills())%></textarea>
+                </c:when>
+                <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                    <c:forEach var="company" varStatus="counter" begin="0" end="50" step="1"
+                               items="<%=((ExperienceSection) section).getCompanies()%>">
+                        <dl>
+                            <dt>Организация:</dt>
+                            <dd><input type="text" name='${type}' value="${company.link.name}"></dd>
+                        </dl>
+                        <dl>
+                            <dt>Сайт:</dt>
+                            <dd><input type="text" name='${type}url' value="${company.link.url}"></dd>
+                        </dl>
+                        <c:forEach var="position" items="${company.positions}">
+
+                            <dl>
+                                <dt>Период:</dt>
+                                <dd><input type="text" placeholder="yyyy-MM" name="${type}${counter.index}startDate"
+                                           value="${position.startDate}"></dd>
+                                <dd><input type="text" placeholder="yyyy-MM" name="${type}${counter.index}endDate"
+                                           value="${position.endDate}"></dd>
+
+                            </dl>
+                            <dl>
+                                <dt>Должность:</dt>
+                                <dd><input type="text" name="${type}${counter.index}position"
+                                           value="${position.position}"></dd>
+
+                            </dl>
+                            <dl>
+                                <dt>Описание:</dt>
+                                <dd><input type="text" name="${type}${counter.index}description"
+                                           value="${position.description}"></dd>
+
+                            </dl>
+                        </c:forEach>
+                    </c:forEach>
+
+                </c:when>
+            </c:choose>
+        </c:forEach>
         <hr>
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>

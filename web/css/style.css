@@ -3,6 +3,10 @@ section {
     margin: auto;
 }
 
+table {
+    border: 5px; /* Граница вокруг таблицы */
+}
+
 header {
     background: none repeat scroll 0 0 #A6C9E2;
     color: #2E6E9E;

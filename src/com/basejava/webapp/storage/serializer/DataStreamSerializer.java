@@ -43,7 +43,7 @@ public class DataStreamSerializer implements SerializeStrategy {
                             dos.writeUTF(company.getLink().getName());
                             dos.writeUTF(company.getLink().getUrl() == null ? dummy : company.getLink().getUrl());
                             writeCollection(dos, company.getPositions(), position -> {
-                                dos.writeUTF(position.getTitle());
+                                dos.writeUTF(position.getPosition());
                                 dos.writeUTF(position.getDescription() == null ? dummy : position.getDescription());
                                 dos.writeUTF(String.valueOf(position.getStartDate()));
                                 dos.writeUTF(String.valueOf(position.getEndDate()));
