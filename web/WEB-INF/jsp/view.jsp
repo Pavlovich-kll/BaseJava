@@ -66,9 +66,9 @@
                     <c:forEach var="company" items="<%=((ExperienceSection) section).getCompanies()%>">
                         <tr>
                             <td colspan="2">
-                                <h4>
+                                <h3>
                                 <a href="${company.link.url}">${company.link.name}</a>
-                                </h4>
+                                </h3>
                             </td>
                         </tr>
                         <c:forEach var="position" items="${company.positions}">

@@ -50,39 +50,37 @@
                               rows=10><%=String.join("\n", ((SkillsSection) section).getSkills())%></textarea>
                 </c:when>
                 <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
-                    <c:forEach var="company" varStatus="counter" begin="0" end="50" step="1"
+                    <c:forEach var="company" varStatus="counter"
                                items="<%=((ExperienceSection) section).getCompanies()%>">
                         <dl>
-                            <dt>Организация:</dt>
+                            <dt>Название учреждения:</dt>
                             <dd><input type="text" name='${type}' value="${company.link.name}"></dd>
                         </dl>
                         <dl>
                             <dt>Сайт:</dt>
                             <dd><input type="text" name='${type}url' value="${company.link.url}"></dd>
                         </dl>
+                        <div style="margin-left: 30px">
                         <c:forEach var="position" items="${company.positions}">
-
                             <dl>
                                 <dt>Период:</dt>
                                 <dd><input type="text" placeholder="yyyy-MM" name="${type}${counter.index}startDate"
                                            value="${position.startDate}"></dd>
                                 <dd><input type="text" placeholder="yyyy-MM" name="${type}${counter.index}endDate"
                                            value="${position.endDate}"></dd>
-
                             </dl>
                             <dl>
                                 <dt>Должность:</dt>
                                 <dd><input type="text" name="${type}${counter.index}position"
                                            value="${position.position}"></dd>
-
                             </dl>
                             <dl>
                                 <dt>Описание:</dt>
                                 <dd><input type="text" name="${type}${counter.index}description"
                                            value="${position.description}"></dd>
-
                             </dl>
                         </c:forEach>
+                        </div>
                     </c:forEach>
 
                 </c:when>

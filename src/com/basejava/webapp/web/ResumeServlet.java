@@ -49,7 +49,9 @@ public class ResumeServlet extends HttpServlet {
             String value = request.getParameter(type.name());
             String[] values = request.getParameterValues(type.name());
 
-            if (HtmlUtil.isNotEmpty(value)) {
+            if (!HtmlUtil.isNotEmpty(value) && values.length < 2) {
+                resume.getSections().remove(type);
+            } else {
                 switch (type) {
                     case PERSONAL:
                     case OBJECTIVE:
@@ -136,15 +138,15 @@ public class ResumeServlet extends HttpServlet {
                         case EDUCATION:
                             ExperienceSection experienceSection = (ExperienceSection) section;
                             List<Company> list = new ArrayList<>();
-                            if (experienceSection == null) {
-                                section = new ExperienceSection(Company.empty);
-                            } else {
+                            if (experienceSection != null) {
                                 for (Company company : experienceSection.getCompanies()) {
-                                    List<Company.Position> positions = new ArrayList<>(company.getPositions());
+                                    List<Company.Position> positions = new ArrayList<>();
+                                    positions.add(Company.Position.empty);
+                                    positions.addAll(company.getPositions());
                                     list.add(new Company(company.getLink(), positions));
                                 }
-                                section = new ExperienceSection(list);
                             }
+                            section = new ExperienceSection(list);
                             break;
                     }
                     resume.setSection(sectionType, section);
