@@ -28,6 +28,7 @@ public class Company implements Serializable {
     }
 
     public Company(Link link, List<Position> positions) {
+        Objects.requireNonNull(positions, "positions must not be null");
         this.link = link;
         this.positions = positions;
     }

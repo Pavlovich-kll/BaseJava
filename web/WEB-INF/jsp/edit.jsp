@@ -82,13 +82,12 @@
                         </c:forEach>
                         </div>
                     </c:forEach>
-
                 </c:when>
             </c:choose>
         </c:forEach>
         <hr>
         <button type="submit">Сохранить</button>
-        <button onclick="window.history.back()">Отменить</button>
+        <button onclick="javascript:history.go(-1); return false;">Отмена</button>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

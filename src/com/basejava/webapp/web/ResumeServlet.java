@@ -31,7 +31,7 @@ public class ResumeServlet extends HttpServlet {
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
         Resume resume;
-        if (HtmlUtil.isNotEmpty(uuid)) {
+        if (!HtmlUtil.isEmpty(uuid)) {
             resume = storage.get(uuid);
             resume.setFullName(fullName);
         } else {
@@ -39,7 +39,7 @@ public class ResumeServlet extends HttpServlet {
         }
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            if (HtmlUtil.isNotEmpty(value)) {
+            if (!HtmlUtil.isEmpty(value)) {
                 resume.setContact(type, value);
             } else {
                 resume.getContacts().remove(type);
@@ -49,7 +49,7 @@ public class ResumeServlet extends HttpServlet {
             String value = request.getParameter(type.name());
             String[] values = request.getParameterValues(type.name());
 
-            if (!HtmlUtil.isNotEmpty(value) && values.length < 2) {
+            if (HtmlUtil.isEmpty(value) && values.length < 2) {
                 resume.getSections().remove(type);
             } else {
                 switch (type) {
@@ -67,29 +67,31 @@ public class ResumeServlet extends HttpServlet {
                         String[] urls = request.getParameterValues(type.name() + "url");
                         for (int i = 0; i < values.length; i++) {
                             String name = values[i];
-                            List<Company.Position> positionsList = new ArrayList<>();
-                            String typeName = type.name() + i;
-                            String[] positions = request.getParameterValues(typeName + "position");
-                            String[] descriptions = request.getParameterValues(typeName + "description");
-                            String[] startDate = request.getParameterValues(typeName + "startDate");
-                            String[] endDate = request.getParameterValues(typeName + "endDate");
-                            for (int j = 0; j < positions.length; j++) {
-                                if (HtmlUtil.isNotEmpty(positions[j])) {
-                                    positionsList.add(new Company.Position(
-                                            positions[j],
-                                            descriptions[j],
-                                            DateUtil.parse(startDate[j]),
-                                            DateUtil.parse(endDate[j])));
+                            if (!HtmlUtil.isEmpty(name)) {
+                                List<Company.Position> positionsList = new ArrayList<>();
+                                String typeName = type.name() + i;
+                                String[] positions = request.getParameterValues(typeName + "position");
+                                String[] descriptions = request.getParameterValues(typeName + "description");
+                                String[] startDate = request.getParameterValues(typeName + "startDate");
+                                String[] endDate = request.getParameterValues(typeName + "endDate");
+                                for (int j = 0; j < positions.length; j++) {
+                                    if (!HtmlUtil.isEmpty(positions[j])) {
+                                        positionsList.add(new Company.Position(
+                                                positions[j],
+                                                descriptions[j],
+                                                DateUtil.parse(startDate[j]),
+                                                DateUtil.parse(endDate[j])));
+                                    }
                                 }
+                                companiesList.add(new Company(new Link(name, urls[i]), positionsList));
                             }
-                            companiesList.add(new Company(new Link(name, urls[i]), positionsList));
                         }
                         resume.setSection(type, new ExperienceSection(companiesList));
                         break;
                 }
             }
         }
-        if (!HtmlUtil.isNotEmpty(uuid)) {
+        if (HtmlUtil.isEmpty(uuid)) {
             storage.save(resume);
         } else {
             storage.update(resume);
@@ -138,6 +140,7 @@ public class ResumeServlet extends HttpServlet {
                         case EDUCATION:
                             ExperienceSection experienceSection = (ExperienceSection) section;
                             List<Company> list = new ArrayList<>();
+                            list.add(Company.empty);
                             if (experienceSection != null) {
                                 for (Company company : experienceSection.getCompanies()) {
                                     List<Company.Position> positions = new ArrayList<>();
