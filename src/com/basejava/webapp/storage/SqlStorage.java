@@ -1,14 +1,21 @@
 package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exception.NotExistStorageException;
-import com.basejava.webapp.model.*;
+import com.basejava.webapp.model.ContactType;
+import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.model.Section;
+import com.basejava.webapp.model.SectionType;
 import com.basejava.webapp.sql.SqlHelper;
+import com.basejava.webapp.util.JsonParser;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SqlStorage implements Storage {
     public final SqlHelper sqlHelper;
@@ -159,17 +166,7 @@ public class SqlStorage implements Storage {
                 Section section = e.getValue();
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
-                switch (e.getKey()) {
-                    case OBJECTIVE:
-                    case PERSONAL:
-                        ps.setString(3, ((SelfInfoSection) section).getSelfInfo());
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        List<String> skills = ((SkillsSection) section).getSkills();
-                        ps.setString(3, String.join("\n", skills));
-                        break;
-                }
+                ps.setString(3, JsonParser.write(section, Section.class));
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -188,29 +185,20 @@ public class SqlStorage implements Storage {
         String value = rs.getString("value");
         if (value != null) {
             SectionType type = SectionType.valueOf(rs.getString("type"));
-            switch (type) {
-                case OBJECTIVE:
-                case PERSONAL:
-                    resume.setSection(type, new SelfInfoSection(value));
-                    break;
-                case ACHIEVEMENT:
-                case QUALIFICATIONS:
-                    List<String> skills = new ArrayList<>(Arrays.asList(value.split("\n")));
-                    resume.setSection(type, new SkillsSection(skills));
-                    break;
-            }
+            resume.setSection(type, JsonParser.read(value, Section.class));
         }
     }
 
     private void deleteContacts(Resume r, Connection conn) throws SQLException {
-        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid=?")) {
-            ps.setString(1, r.getUuid());
-            ps.execute();
-        }
+        deleteAttributes(r, conn, "DELETE FROM contact WHERE resume_uuid=?");
     }
 
     private void deleteSections(Resume r, Connection conn) throws SQLException {
-        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM section WHERE resume_uuid=?")) {
+        deleteAttributes(r, conn, "DELETE FROM section WHERE resume_uuid=?");
+    }
+
+    private void deleteAttributes(Resume r, Connection conn, String sql) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, r.getUuid());
             ps.execute();
         }

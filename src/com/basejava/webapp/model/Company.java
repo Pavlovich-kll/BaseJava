@@ -15,6 +15,8 @@ import java.util.Objects;
 public class Company implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    public static Company empty = new Company("", "", Position.empty);
+
     private Link link;
     private List<Position> positions;
 
@@ -63,8 +65,9 @@ public class Company implements Serializable {
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
-        public String title;
+        public String position;
         public String description;
+        public static Position empty = new Position();
 
         @XmlJavaTypeAdapter(YearMonthAdapter.class)
         public YearMonth startDate;
@@ -75,18 +78,18 @@ public class Company implements Serializable {
         public Position() {
         }
 
-        public Position(String title, String description, YearMonth startDate, YearMonth endDate) {
-            Objects.requireNonNull(title, "title shouldn't be null");
+        public Position(String position, String description, YearMonth startDate, YearMonth endDate) {
+            Objects.requireNonNull(position, "title shouldn't be null");
             Objects.requireNonNull(startDate, "startDate shouldn't be null");
             Objects.requireNonNull(endDate, "endDate shouldn't be null");
-            this.title = title;
+            this.position = position;
             this.description = description;
             this.startDate = startDate;
             this.endDate = endDate;
         }
 
-        public String getTitle() {
-            return title;
+        public String getPosition() {
+            return position;
         }
 
         public String getDescription() {
@@ -106,7 +109,7 @@ public class Company implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Position position = (Position) o;
-            return title.equals(position.title) &&
+            return this.position.equals(position.position) &&
                     description != null ? description.equals(position.description) : position.description == null &&
                     startDate.equals(position.startDate) &&
                     endDate.equals(position.endDate);
@@ -114,13 +117,13 @@ public class Company implements Serializable {
 
         @Override
         public int hashCode() {
-            return Objects.hash(title, description, startDate, endDate);
+            return Objects.hash(position, description, startDate, endDate);
         }
 
         @Override
         public String toString() {
             return "Position{" +
-                    "title='" + title + '\'' +
+                    "position='" + position + '\'' +
                     ", description='" + description + '\'' +
                     ", startDate=" + startDate +
                     ", endDate=" + endDate +

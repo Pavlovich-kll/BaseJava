@@ -22,7 +22,7 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = UUID.randomUUID().toString();
     private static final String UUID_3 = UUID.randomUUID().toString();
     private static final String UUID_4 = UUID.randomUUID().toString();
-    private static final Resume RESUME_1 = ResumeTestData.getResume(UUID_1, "fullName1");
+    public static final Resume RESUME_1 = ResumeTestData.getResume(UUID_1, "fullName1");
     private static final Resume RESUME_2 = ResumeTestData.getResume(UUID_2, "fullName2");
     private static final Resume RESUME_3 = ResumeTestData.getResume(UUID_3, "fullName3");
     private static final Resume RESUME_4 = ResumeTestData.getResume(UUID_4, "fullName4");
